@@ -1,0 +1,18 @@
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+.env
+
+# Config
+config.json
+
+# Virtual environments
+.venv/
+venv/
+
+# VS Code
+.vscode/
