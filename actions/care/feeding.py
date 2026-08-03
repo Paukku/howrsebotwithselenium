@@ -7,12 +7,12 @@ def feed_horse(driver):
   changed = False
 
   if hay_current < hay_target:
-    select_slider_value(driver, 2, "haySlider", hay_target + 1)
+    select_slider_value(driver, 2, "haySlider", hay_target)
     changed = True
   sleep()
 
   if oat_current < oat_target:
-    select_slider_value(driver, 4, "oatsSlider", oat_target + 1)
+    select_slider_value(driver, 4, "oatsSlider", oat_target)
     changed = True
   sleep()
   
@@ -34,8 +34,9 @@ def get_feed_values(driver, section):
 
 
 def select_slider_value(driver, tr, slider_id, amount):
+  slider_index = amount + 1
   driver.find_element(
     By.XPATH,
-    f"/html/body/div[@id='container']/main[@id='content']/section/section/div[@id='console']/div[@id='sortable']/div[@id='col-left']/div[2]/div[1]/div[1]//div[1]/div[1]/div[@id='care-tab-feed']/table/tbody/tr[2]/td/form/table/tbody/tr[{tr}]/td/div[@id='{slider_id}']/ol/li[{amount}]"
+    f"/html/body/div[@id='container']/main[@id='content']/section/section/div[@id='console']/div[@id='sortable']/div[@id='col-left']/div[2]/div[1]/div[1]//div[1]/div[1]/div[@id='care-tab-feed']/table/tbody/tr[2]/td/form/table/tbody/tr[{tr}]/td/div[@id='{slider_id}']/ol/li[{slider_index}]"
   ).click()
 
