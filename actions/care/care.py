@@ -1,11 +1,18 @@
 from utils.randomTime import sleep, random_wait
 from actions.care.center import center_not_automated
-from actions.care.feeding import feed_horse
+from actions.care.feeding import feed_horse, automated_feed
 import random
 from selenium.webdriver.common.by import By
+import json
+from pathlib import Path
+from .divines_functions import DIVINE_ACTIONS
 
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-def take_care_horses(driver, horse):
+with open(BASE_DIR / "data" / "divines.json", encoding="utf-8") as f:
+    DIVINES = json.load(f)
+
+def take_care_horses(driver, feeding, horse):
   sleep()
   count = 0
   is_it_break = 0
@@ -16,9 +23,8 @@ def take_care_horses(driver, horse):
   driver.get(f"https://www.howrse.fi/elevage/chevaux/cheval?id={horse['id']}")
   sleep()
 
-  while(count < horse["amount"]):
-    sleep()
-    take_care_one_horse(driver)
+  while(count < horse["amount"]):   
+    take_care_one_horse(driver, feeding)
     
     count += 1
     is_it_break += 1
@@ -27,12 +33,33 @@ def take_care_horses(driver, horse):
     driver.find_element(By.ID, "nav-next").click()
     sleep()
 
-def take_care_one_horse(driver):
-    center_not_automated(driver)
-    do_task(driver)
-    grooming(driver)
-    sleeping(driver)
-    feeding(driver)
+def take_care_one_horse(driver, feed):
+  horse_name = get_horse_name(driver)
+
+  horse = DIVINES.get(horse_name)
+
+  if horse:
+    divine_type = horse["group"]
+    do_divine_action(driver, divine_type)
+
+    rules = horse.get("rules", [])
+
+    if "skip_normal_care" in rules:
+      return
+
+  center_not_automated(driver)
+  do_task(driver)
+  grooming(driver)
+  sleeping(driver)
+  feeding(driver, feed)
+  
+
+def do_divine_action(driver, divine_type):
+  print(divine_type)
+  action = DIVINE_ACTIONS.get(divine_type)
+
+  if action:
+    action(driver)
 
 def randomNumberOfHorses():
   horse = random.randint(18, 170)
@@ -55,16 +82,20 @@ def sleeping(driver):
   driver.find_element(By.ID, "boutonCoucher").click()
   sleep()
 
-def feeding(driver):
+def feeding(driver, feed):
   driver.find_element(By.ID, "boutonNourrir").click()
   sleep()
-  try:
-    feed_horse(driver)
-    sleep()
+  if feed == 'normal':
+    try:
+      feed_horse(driver)
+      sleep()
 
-  except:
-    pass
-    sleep()
+    except:
+      pass
+      sleep()
+
+  if feed == "automated":
+    automated_feed(driver)
 
 def do_task(driver):
   try:
@@ -78,3 +109,10 @@ def do_task(driver):
         except:
           pass
   sleep()
+
+def get_horse_name(driver):
+  horse_name = driver.find_element(By.CSS_SELECTOR, "h1.horse-name a").text
+  return horse_name
+
+def get_divine_type(horse_name):
+  return DIVINES.get(horse_name)

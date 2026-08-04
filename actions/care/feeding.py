@@ -40,3 +40,6 @@ def select_slider_value(driver, tr, slider_id, amount):
     f"/html/body/div[@id='container']/main[@id='content']/section/section/div[@id='console']/div[@id='sortable']/div[@id='col-left']/div[2]/div[1]/div[1]//div[1]/div[1]/div[@id='care-tab-feed']/table/tbody/tr[2]/td/form/table/tbody/tr[{tr}]/td/div[@id='{slider_id}']/ol/li[{slider_index}]"
   ).click()
 
+def automated_feed(driver):
+  driver.find_element(By.ID, "feed-button").click()
+  sleep()
