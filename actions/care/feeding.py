@@ -1,7 +1,7 @@
 from utils.randomTime import sleep
 from selenium.webdriver.common.by import By
 
-def feed_horse(driver):
+def feed_horse(driver, full_oats=False):
   hay_current, hay_target = get_feed_values(driver, "fourrage")
   oat_current, oat_target = get_feed_values(driver, "avoine")
   changed = False
@@ -11,8 +11,17 @@ def feed_horse(driver):
     changed = True
   sleep()
 
-  if oat_current < oat_target:
-    select_slider_value(driver, 4, "oatsSlider", oat_target)
+  print(full_oats)
+
+  if full_oats:
+    print(full_oats)
+    oat_amount = 19
+  else:
+    oat_amount = oat_target + 1
+
+  if oat_current < oat_target or full_oats:
+    print(oat_amount)
+    select_slider_value(driver, 4, "oatsSlider", oat_amount)
     changed = True
   sleep()
   

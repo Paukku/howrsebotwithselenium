@@ -2,7 +2,7 @@
   "Ksanthos": {"group": "Mystic" },
   "Kroisos": {"group": "Mystic" },
   "Gullfaxi": {"group": "Mystic" },
-  "Hrímfaxi": {"group": "Mystic" },
+  "Hrímfaxi": {"group": "Hrim" },
   "Skínfaxi": {"group": "Mystic" },
   "Svadilfari": {"group": "Mystic" },
   "Sleipnir": {"group": "Mystic" },
@@ -33,51 +33,71 @@
   "Grane 12": {"group": "Mystic" },
   "Saturnus": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ],
+    "walk": "saturne"},
   "Kuu": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ],
+    "walk": "lune"},
   "Mars": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ],
+    "walk": "mars"},
   "Pluto": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ],
+    "walk": "pluton"},
   "Aurinko": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ],
+    "walk": "soleil"},
   "Maa": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ],
+    "walk": "terre"},
   "Uranus": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ] ,
+    "walk": "uranus"},
   "Venus": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ],
+    "walk": "venus"},
   "Neptunus": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ],
+    "walk": "neptune"},
   "Merkurius": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
-    ] },
+      "skip_normal_care",
+      "full_oats"
+    ],
+    "walk": "mercure"},
   "Jupiter": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care", "skip_divine_care"
     ] },
   "Io": {"group": "Solar System", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care", "skip_divine_care"
     ]  },
   "Safiiri": {"group": "Gemstone",
     "rules": [
@@ -170,67 +190,83 @@
   "Tūmatauenga": {"group": "Maori" },
   "Fenrir": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Jörmungandr": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Odin": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Thor": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Hel": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Loki": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Frigg": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Týr": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Ymir": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Freya": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ]  },
   "Delling": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Idunn": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Baldr": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Bragi": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Heimdall": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Ràn": {"group": "Nordic", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Samurai": {"group": "Japanese" },
   "Hanafuda": {"group": "Japanese" },
@@ -265,31 +301,38 @@
   "Revontulet": {"group": "Dragon" },
   "Pyry": {"group": "Reindeer", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Poku": {"group": "Reindeer", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Ailu": {"group": "Reindeer", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Sipsu": {"group": "Reindeer", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Turpo": {"group": "Reindeer", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Valkko": {"group": "Reindeer", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Cupido": {"group": "Reindeer", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Percival": {"group": "Grail" },
   "Arthur": {"group": "Grail" },
@@ -331,7 +374,7 @@
   "Pähkinänsärkijä": {"group": "Fairy Tales" },
   "Peukaloinen": {"group": "Fairy Tales" },
   "Bremenin soittoniekat": {"group": "Fairy Tales" },
-  "Liisa ihmemaassa": {"group": "Fairy Tales" },
+  "Liisa Ihmemaassa": {"group": "Fairy Tales" },
   "Urhea pikku räätäli": {"group": "Fairy Tales" },
   "Hopea": {"group": "Metallic" },
   "Elohopea": {"group": "Metallic" },
@@ -379,39 +422,48 @@
   "Punainen jättiläinen": {"group": "Stellar" },
   "Aartavilainen": {"group": "Space", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Denecanipedynediläinen": {"group": "Space", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Syfananitlafilainen": {"group": "Space", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Craksstatamilainen": {"group": "Space", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Roptaderilainen": {"group": "Space", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Udenilainen": {"group": "Space", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Hen Ghittian": {"group": "Space", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Lorel Cattalian": {"group": "Space", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Sybsaian": {"group": "Space", 
     "rules": [
-      "skip_normal_care"
+      "skip_normal_care",
+      "full_oats"
     ] },
   "Poptaide": {"group": "Art" },
   "Veistos": {"group": "Art" },
