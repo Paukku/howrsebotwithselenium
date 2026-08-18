@@ -10,9 +10,11 @@ account = config["accounts"][0]
 
 for account in config["accounts"]:
   print(account["name"])
+  feeding = account["feeding"]
 
   for horse in account["horses"]:
     take_care_horses(
       driver,
+      feeding,
       horse
     )
