@@ -1,5 +1,5 @@
 from actions.care.feeding import feed_horse, automated_feed
-from utils.randomTime import sleep
+from utils.randomTime import short_sleep as sleep
 from selenium.webdriver.common.by import By
 
 def click_care_button(driver, button_id):
@@ -27,7 +27,7 @@ def give_mash(driver):
 def feeding(driver, feed, full_oats=False):
   driver.find_element(By.ID, "boutonNourrir").click()
   sleep()
-  print(full_oats)
+
 
   if full_oats:
     feed_horse(driver, full_oats=True)

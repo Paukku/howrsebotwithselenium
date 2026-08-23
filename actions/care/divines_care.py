@@ -35,4 +35,5 @@ def default_care(driver, feed, full_oats=False):
   stroke(driver)
   give_water(driver)
   give_carrot(driver)
+  give_mash(driver)
   feeding(driver, feed, full_oats)
