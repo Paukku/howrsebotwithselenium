@@ -1,5 +1,5 @@
 BLUP_DAYS = {
-  "0y6m": [],"0y8m": [],"0y10m": [],"1y0m": [],"1y2m": [],"1y4m": [],
+  "0y6m": ["metsätalli", "tallinvaihto"],"0y8m": [],"0y10m": [],"1y0m": [],"1y2m": [],"1y4m": [],
   "1y6m": [
     "metsä"
   ],
@@ -93,7 +93,8 @@ BLUP_DAYS = {
   ],
   "6y2m" : [
     "nopeus",
-    "tallinvaihto"
+    "vuoritalli",
+    "varusteet"
   ],
   "6y4m" : [
     "estekisat 7"

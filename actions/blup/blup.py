@@ -1,11 +1,11 @@
 import re
 from selenium.webdriver.common.by import By
 from actions.care.care_actions import grooming, give_carrot, feeding, give_water
-from actions.care.divines_functions import click_button_by_text, click_divine_action
 from .blup_days import BLUP_DAYS
 from .training import forest_walk, mountain_walk, select_auto_training
 from utils.randomTime import short_sleep as sleep
 from .competitions import jumping_competition
+from actions.care.center import change_to_own_stable, change_to_mountain_stable
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -52,13 +52,32 @@ def get_new_foal_id(driver):
 
   return horse_id
 
-
-
-def blup_horse(driver, horse_id, feed):
+def prepare_foal(driver):
 
   while True:
 
     age = get_horse_age(driver)
+
+    print(f"Varsan ikä: {age}")
+
+    if age == "0y6m":
+      print("Varsan alkuvaihe valmis.")
+      return
+
+    if age not in ["foal", "0y2m", "0y4m"]:
+      raise ValueError(
+        f"Odottamaton varsan ikä: {age}"
+      )
+
+    grooming(driver)
+    age_up(driver)
+
+def blup_horse(driver, horse_id, feed):
+  while True:
+
+    age = get_horse_age(driver)
+
+    prepare_foal(driver)
 
     if age == "10y0m":
       print("Hevonen saavutti 10 vuoden iän.")
@@ -73,9 +92,9 @@ def blup_horse(driver, horse_id, feed):
       print("BLUP valmis!")
       return
 
-    blup_day(driver, horse_id, feed)
+    blup_day(driver, feed)
 
-def blup_day(driver, horse_id, feed):
+def blup_day(driver, feed):
   
   age = get_horse_age(driver)
 
@@ -87,7 +106,7 @@ def blup_day(driver, horse_id, feed):
 
   # Hoito tehdään aina ensimmäisenä
   grooming(driver)
-  give_carrot(driver)
+ # give_carrot(driver)
 
   # Päivän tehtävät oikeassa järjestyksessä
   for task in BLUP_DAYS[age]:
@@ -121,7 +140,12 @@ def blup_day(driver, horse_id, feed):
     elif task == "RAVIKISAT":
       input("Täytä ravikisat käsin ja paina Enter jatkaaksesi...")
 
+    elif task == "metsätalli":
+      change_to_own_stable(driver)
+      input("Laitettiinko talliin?")
+
     elif task == "tallinvaihto":
+      change_to_mountain_stable(driver)
       input("Vaihda vuoritalliin ja laita varusteet päälle")
 
   give_water(driver)
@@ -164,6 +188,9 @@ def get_horse_age(driver):
   )
 
   age_text = age_cell.text
+
+  if "muutama tunti" in age_text:
+    return "foal"
 
   # Esim. "1 vuosi 6 kuukautta" tai "2 vuotta"
   match = re.search(
