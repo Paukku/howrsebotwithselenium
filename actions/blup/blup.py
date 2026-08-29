@@ -1,6 +1,6 @@
 import re
 from selenium.webdriver.common.by import By
-from actions.care.care_actions import grooming, give_carrot, feeding, give_water
+from actions.care.care_actions import grooming, give_carrot, feeding, give_water, equip_classic_gear
 from .blup_days import BLUP_DAYS
 from .training import forest_walk, mountain_walk, select_auto_training
 from utils.randomTime import short_sleep as sleep
@@ -144,7 +144,9 @@ def blup_day(driver, feed):
 
     elif task == "tallinvaihto":
       change_to_mountain_stable(driver)
-      input("Vaihda vuoritalliin ja laita varusteet päälle")
+
+    elif task == "varusteet":
+      equip_classic_gear(driver)
 
   give_water(driver)
   feeding(driver, feed=feed)
