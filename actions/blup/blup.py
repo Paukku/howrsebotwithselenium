@@ -4,7 +4,7 @@ from actions.care.care_actions import grooming, give_carrot, feeding, give_water
 from .blup_days import BLUP_DAYS
 from .training import forest_walk, mountain_walk, select_auto_training
 from utils.randomTime import short_sleep as sleep
-from .competitions import jumping_competition
+from .competitions import jumping_competition, dressage_competition
 from actions.care.center import change_to_own_stable, change_to_mountain_stable
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -74,7 +74,7 @@ def blup_horse(driver, horse_id, feed):
   while True:
 
     age = get_horse_age(driver)
-
+    
     prepare_foal(driver)
 
     if age == "10y0m":
@@ -90,15 +90,17 @@ def blup_horse(driver, horse_id, feed):
       print("BLUP valmis!")
       return
 
-    blup_day(driver, feed)
+    blup_days = get_blup_days(driver)
 
-def blup_day(driver, feed):
+    blup_day(driver, blup_days, feed)
+
+def blup_day(driver, blup_days, feed):
   
   age = get_horse_age(driver)
 
   print(f"Hevosen ikä: {age}")
 
-  if age not in BLUP_DAYS:
+  if age not in blup_days:
     print(f"Ikää {age} ei löydy BLUP_DAYS-listasta.")
     return
 
@@ -107,7 +109,7 @@ def blup_day(driver, feed):
  # give_carrot(driver)
 
   # Päivän tehtävät oikeassa järjestyksessä
-  for task in BLUP_DAYS[age]:
+  for task in blup_days[age]:
     print(f"Tehdään: {task}")
 
     if task == "metsä":
@@ -125,6 +127,9 @@ def blup_day(driver, feed):
     elif task == "este":
       select_auto_training(driver, "este")
 
+    elif task == "ravi":
+      select_auto_training(driver, "ravi")
+
     elif task == "nopeus":
       select_auto_training(driver, "nopeus")
 
@@ -135,12 +140,15 @@ def blup_day(driver, feed):
       _, amount = task.split()
       jumping_competition(driver, int(amount))
 
-    elif task == "RAVIKISAT":
-      input("Täytä ravikisat käsin ja paina Enter jatkaaksesi...")
+    elif task.startswith("koulukisat"):
+      _, amount = task.split()
+      dressage_competition(driver, int(amount))
+
+    elif task == "RAVIKISAT" or task == "MAASTOKISAT":
+      input("Täytä kisat käsin ja paina Enter jatkaaksesi...")
 
     elif task == "metsätalli":
       change_to_own_stable(driver)
-      input("Laitettiinko talliin?")
 
     elif task == "tallinvaihto":
       change_to_mountain_stable(driver)
@@ -214,3 +222,19 @@ def get_horse_age(driver):
     return f"0y{months}m"
 
   raise ValueError(f"Ikää ei voitu lukea: {age_text}")
+
+
+def get_blup_days(driver):
+  breed = get_horse_breed(driver)
+  print(breed)
+
+  if breed not in BLUP_DAYS:
+    raise ValueError(f"Tuntematon rotu: {breed}")
+
+  return BLUP_DAYS[breed]
+
+def get_horse_breed(driver):
+  return driver.find_element(
+    By.XPATH,
+    "//td[.//strong[normalize-space()='Rotu:']]//a"
+  ).text.strip()

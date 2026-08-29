@@ -36,9 +36,15 @@ def select_auto_training(driver, training):
 
   elif training == "laukka":
     click_divine_action(
-        driver,
-        button_id="training-galop-submit"
+      driver,
+      button_id="training-galop-submit"
       )
+    
+  elif training == "ravi":
+    click_divine_action(
+      driver,
+      button_id="training-trot-submit"
+    )
 
   else:
     raise ValueError(f"Tuntematon koulutus: {training}")
