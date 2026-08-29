@@ -54,3 +54,17 @@ def get_horse_breed(driver):
     By.XPATH,
     "//td[.//strong[normalize-space()='Rotu:']]//a"
   ).text.strip()
+
+def get_new_foal_id(driver):
+
+  url = driver.current_url
+  print(f"Nykyinen URL: {url}")
+  match = re.search(r"[?&]id=(\d+)", url)
+
+  if not match:
+    raise ValueError(f"Hevosen ID:tä ei löytynyt URL-osoitteesta: {url}")
+
+  horse_id = match.group(1)
+  print(f"Löydetty hevosen ID: {horse_id}")
+
+  return horse_id

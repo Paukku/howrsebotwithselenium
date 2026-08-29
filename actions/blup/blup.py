@@ -9,7 +9,7 @@ from actions.care.center import change_to_own_stable, change_to_mountain_stable
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from blup_utils import get_horse_age, get_blup_days
+from blup_utils import get_horse_age, get_blup_days, get_new_foal_id
 
 def run_blup(driver, amount, start_horse_id, feed):
   horse_id = start_horse_id
@@ -38,20 +38,6 @@ def run_blup(driver, amount, start_horse_id, feed):
 
 def breed_horse(driver, horse_id):
   input(f"Astuta ja saa uusi bluppi, mene uuden blupin sivuille ja ikäännytä 1v6kk. Sitten paina enter")
-
-def get_new_foal_id(driver):
-
-  url = driver.current_url
-  print(f"Nykyinen URL: {url}")
-  match = re.search(r"[?&]id=(\d+)", url)
-
-  if not match:
-    raise ValueError(f"Hevosen ID:tä ei löytynyt URL-osoitteesta: {url}")
-
-  horse_id = match.group(1)
-  print(f"Löydetty hevosen ID: {horse_id}")
-
-  return horse_id
 
 def prepare_foal(driver):
 
