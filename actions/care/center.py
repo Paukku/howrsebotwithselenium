@@ -91,6 +91,12 @@ def change_to_mountain_stable(driver):
 
   sleep()
   driver.find_element(
+    By.CSS_SELECTOR,
+    "div.select-vip"
+  ).click()
+
+  sleep()
+  driver.find_element(
     By.XPATH,
     "//span[contains(@class, 'vip-search-label') and normalize-space()='*bluppivuori klassinen']"
   ).click()

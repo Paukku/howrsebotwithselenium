@@ -65,9 +65,7 @@ def prepare_foal(driver):
       return
 
     if age not in ["foal", "0y2m", "0y4m"]:
-      raise ValueError(
-        f"Odottamaton varsan ikä: {age}"
-      )
+      return
 
     grooming(driver)
     age_up(driver)
