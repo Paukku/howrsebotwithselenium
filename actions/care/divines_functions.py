@@ -37,6 +37,20 @@ def click_button_by_text(driver, text):
   except NoSuchElementException:
     return False
 
+def click_link_by_text(driver, text):
+  try:
+    link = driver.find_element(
+      By.XPATH,
+      f"//a[contains(normalize-space(), '{text}')]"
+    )
+
+    driver.execute_script("arguments[0].click();", link)
+    sleep()
+    return True
+
+  except NoSuchElementException:
+    return False
+
 def click_if_enabled(driver, button_id):
   try:
     button = driver.find_element(By.ID, button_id)

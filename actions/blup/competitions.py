@@ -40,7 +40,7 @@ def dressage_competition(driver, amount):
     driver,
     amount,
     [
-      "a.competition-dressage-rainbow",
+      #"a.competition-dressage-rainbow",
       "a.competition-dressage"
     ],
     "Koulukisa"

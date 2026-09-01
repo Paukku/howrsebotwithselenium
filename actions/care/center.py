@@ -37,13 +37,13 @@ def center_not_automated(driver):
 
 def change_to_own_stable(driver):
   registration_buttons = driver.find_elements(
-      By.CSS_SELECTOR,
-      "a[href*='centreInscription']"
+    By.CSS_SELECTOR,
+    "a[href*='centreInscription']"
   )
 
   if not registration_buttons:
-      print("Hevonen on jo omassa tallissa. Talliin laitto ohitetaan.")
-      return
+    print("Hevonen on jo omassa tallissa. Talliin laitto ohitetaan.")
+    return
 
   print("Laitetaan hevonen omaan talliin.")
 
@@ -70,6 +70,16 @@ def change_to_own_stable(driver):
   sleep()
 
 def change_to_mountain_stable(driver):
+
+  registration_buttons = driver.find_elements(
+    By.XPATH,
+    "//button[.//span[normalize-space()='Peru majoitus']]"
+  )
+
+  if not registration_buttons:
+    print("Hevonen on jo omassa tallissa. Talliin laitto ohitetaan.")
+    return
+  
 
   # 1. Peruuta nykyinen majoitus
   driver.find_element(

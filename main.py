@@ -13,15 +13,18 @@ horse_id = blup["horse_id"]
 amount = blup["amount"]
 
 run_blup(driver, amount, horse_id, feeding)
-#account = config["accounts"][0]
+account = config["accounts"][0]
 
-#for account in config["accounts"]:
-#  print(account["name"])
-#  feeding = account["feeding"]
+for account in config["accounts"]:
+  print(account["name"])
+  feeding = account["feeding"]
 
-#  for horse in account["horses"]:
-#    take_care_horses(
-#      driver,
-#      feeding,
-#      horse
-#    )
+  for horse in account["horses"]:
+    skip_feeding = horse.get("skip_feeding", False)
+        
+    take_care_horses(
+      driver,
+      feeding,
+      horse,
+      skip_feeding=skip_feeding
+    )

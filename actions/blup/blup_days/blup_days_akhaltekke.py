@@ -1,4 +1,4 @@
-BLUP_DAYS_HOLSTEIN = {
+BLUP_DAYS_AKHALTEKKE = {
   "0y6m": ["metsätalli"],"0y8m": [],"0y10m": [],"1y0m": [],"1y2m": [],"1y4m": [],
   "1y6m": [
     "metsä"
@@ -50,42 +50,42 @@ BLUP_DAYS_HOLSTEIN = {
     "koulu"
   ],
   "3y10m" : [
-    "nopeus"
+    "kestävyys"
   ],
   "4y0m" : [
-    "nopeus"
+    "kestävyys"
   ],
   "4y2m" : [
-    "nopeus"
+    "kestävyys"
   ],
   "4y4m" : [
-    "nopeus"
+    "kestävyys"
   ],
   "4y6m" : [
-    "nopeus"
+    "kestävyys"
   ],
   "4y8m" : [
-    "nopeus"
+    "kestävyys"
   ],
   "4y10m" : [
-    "nopeus"
+    "kestävyys"
   ],
   "5y0m" : [
-    "nopeus",
+    "kestävyys",
     "tallinvaihto",
     "varusteet"
   ],
   "5y2m" : [
-    "estekisat 7"
+    "maastokisat 7"
   ],
   "5y4m" : [
-    "estekisat 7"
+    "maastokisat 7"
   ],
   "5y6m" : [
-    "estekisat 7"
+    "maastokisat 7"
   ],
   "5y8m" : [
-    "estekisat 4",
+    "maastokisat 4",
     "RAVIKISAT"
   ],
   "5y10m" : [

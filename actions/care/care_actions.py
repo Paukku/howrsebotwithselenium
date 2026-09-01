@@ -25,7 +25,10 @@ def stroke(driver):
 def give_mash(driver):
   click_care_button(driver, "boutonMash")
 
-def feeding(driver, feed, full_oats=False):
+def feeding(driver, feed, full_oats=False, skip_feeding=False):
+  print(skip_feeding)
+  if skip_feeding:
+    return
   driver.find_element(By.ID, "boutonNourrir").click()
   sleep()
 

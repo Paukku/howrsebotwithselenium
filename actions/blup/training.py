@@ -8,6 +8,9 @@ def mountain_walk(driver):
   # Metsän valinta
   click_divine_action(driver, button_id="boutonBalade-montagne")
 
+def beach_walk(driver):
+  click_divine_action(driver, button_id="boutonBalade-plage")
+
 def select_auto_training(driver, training):
 
   if training == "nopeus":

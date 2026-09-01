@@ -2,7 +2,6 @@ import re
 from selenium.webdriver.common.by import By
 from .blup_days.blup_days import BLUP_DAYS
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 
 def get_horse_age(driver):

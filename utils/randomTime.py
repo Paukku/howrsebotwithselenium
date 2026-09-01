@@ -2,7 +2,7 @@ import time
 import random
 
 def short_sleep():
-  time.sleep(random.uniform(0.33, 0.39)) #vaihda 23 ja 33
+  time.sleep(random.uniform(0.35, 0.39)) #vaihda 23 ja 33
 
 def sleep():
   time.sleep(random.uniform(1.23,  1.35))

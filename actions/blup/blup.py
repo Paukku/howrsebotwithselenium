@@ -1,15 +1,14 @@
-import re
 from selenium.webdriver.common.by import By
-from actions.care.care_actions import grooming, give_carrot, feeding, give_water, equip_classic_gear
+from actions.care.care_actions import grooming, give_carrot, feeding, give_water, equip_classic_gear, stroke, give_mash
 from .blup_days.blup_days import BLUP_DAYS
-from .training import forest_walk, mountain_walk, select_auto_training
+from .training import forest_walk, mountain_walk, select_auto_training, beach_walk
 from utils.randomTime import short_sleep as sleep
-from .competitions import jumping_competition, dressage_competition
+from .competitions import jumping_competition, dressage_competition, cross_competition
 from actions.care.center import change_to_own_stable, change_to_mountain_stable
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from blup_utils import get_horse_age, get_blup_days, get_new_foal_id
+from .blup_utils import get_horse_age, get_blup_days, get_new_foal_id
+from actions.care.divines_functions import click_divine_button, click_link_by_text 
 
 def run_blup(driver, amount, start_horse_id, feed):
   horse_id = start_horse_id
@@ -58,26 +57,21 @@ def prepare_foal(driver):
     age_up(driver)
 
 def blup_horse(driver, horse_id, feed):
+  prepare_foal(driver)
   while True:
 
-    age = get_horse_age(driver)
+    age = get_horse_age(driver) 
     
-    prepare_foal(driver)
+    blup_days = get_blup_days(driver)
 
     if age == "10y0m":
       print("Hevonen saavutti 10 vuoden iän.")
       breed_horse(driver, horse_id)
       return
 
-    if age not in BLUP_DAYS:
+    if age not in blup_days:
       print(f"Ikää {age} ei löydy BLUP_DAYS-listasta.")
-      return
-
-    if age not in BLUP_DAYS:
-      print("BLUP valmis!")
-      return
-
-    blup_days = get_blup_days(driver)
+      return    
 
     blup_day(driver, blup_days, feed)
 
@@ -93,7 +87,7 @@ def blup_day(driver, blup_days, feed):
 
   # Hoito tehdään aina ensimmäisenä
   grooming(driver)
- # give_carrot(driver)
+  give_carrot(driver)
 
   # Päivän tehtävät oikeassa järjestyksessä
   for task in blup_days[age]:
@@ -107,6 +101,9 @@ def blup_day(driver, blup_days, feed):
     
     elif task == "koulu":
       select_auto_training(driver, "koulu")
+
+    elif task == "ranta":
+      beach_walk(driver)
 
     elif task == "laukka":
       select_auto_training(driver, "laukka")
@@ -130,6 +127,10 @@ def blup_day(driver, blup_days, feed):
     elif task.startswith("koulukisat"):
       _, amount = task.split()
       dressage_competition(driver, int(amount))
+    
+    elif task.startswith("maastokisat"):
+      _, amount = task.split()
+      cross_competition(driver, int(amount))
 
     elif task == "RAVIKISAT" or task == "MAASTOKISAT":
       input("Täytä kisat käsin ja paina Enter jatkaaksesi...")
@@ -142,6 +143,15 @@ def blup_day(driver, blup_days, feed):
 
     elif task == "varusteet":
       equip_classic_gear(driver)
+
+    elif task == "lajinvaihto":
+      change_specialization(driver)
+
+    elif task == "silitä":
+      stroke(driver)
+
+    elif task == "ape":
+      give_mash(driver)
 
   give_water(driver)
   feeding(driver, feed=feed)
@@ -175,3 +185,36 @@ def age_up(driver):
 
   sleep()
 
+def change_specialization(driver):
+
+  # 1. Avaa toimintovalikko
+  driver.find_element(
+    By.CSS_SELECTOR,
+    "div.options-button button"
+  ).click()
+
+  sleep()
+
+  # 2. Avaa Muokkaa profiilia
+  click_link_by_text(
+    driver,
+    "Muokkaa profiilia"
+  )
+
+  sleep()
+
+  # 3. Valitse Lännenratsastus
+  click_divine_button(
+    driver,
+    "horseNameRespecialisationWestern"
+  )
+
+  sleep()
+
+  # 4. Vahvista muutos
+  driver.find_element(
+    By.CSS_SELECTOR,
+    "#horseName button[type='submit']"
+  ).click()
+
+  sleep()
