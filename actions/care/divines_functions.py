@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 def click_divine_button(driver, button_id):
   try:
-    button = WebDriverWait(driver, 10).until(
+    button = WebDriverWait(driver, 3).until(
       EC.element_to_be_clickable(
         (By.ID, button_id)
       )
@@ -31,6 +31,20 @@ def click_button_by_text(driver, text):
     )
 
     driver.execute_script("arguments[0].click();", button)
+    sleep()
+    return True
+
+  except NoSuchElementException:
+    return False
+
+def click_link_by_text(driver, text):
+  try:
+    link = driver.find_element(
+      By.XPATH,
+      f"//a[contains(normalize-space(), '{text}')]"
+    )
+
+    driver.execute_script("arguments[0].click();", link)
     sleep()
     return True
 
@@ -140,9 +154,9 @@ def take_japanese_ufo(driver):
     print(f"UFO action failed: {e}")
 
 def take_walk(driver, walk, hours):
-    click_divine_button(driver, f"boutonBalade-{walk}")
-    select_walk_duration(driver, walk, hours)
-    click_divine_button(driver, f"walk-{walk}-submit")
+  click_divine_button(driver, f"boutonBalade-{walk}")
+  select_walk_duration(driver, walk, hours)
+  click_divine_button(driver, f"walk-{walk}-submit")
 
 def select_walk_duration(driver, walk, hours):
   slider = driver.find_element(
@@ -152,7 +166,7 @@ def select_walk_duration(driver, walk, hours):
   sleep()
 
   value = hours * 2
-  element = WebDriverWait(driver, 1).until(
+  element = WebDriverWait(driver, 2).until(
     EC.element_to_be_clickable(
       (
         By.CSS_SELECTOR,

@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 with open(BASE_DIR / "data" / "divines.json", encoding="utf-8") as f:
     DIVINES = json.load(f)
 
-def take_care_horses(driver, feeding, horse):
+def take_care_horses(driver, feeding, horse, skip_feeding):
   sleep()
   count = 0
   is_it_break = 0
@@ -28,7 +28,7 @@ def take_care_horses(driver, feeding, horse):
   sleep()
 
   while(count < horse["amount"]):   
-    take_care_one_horse(driver, feeding)
+    take_care_one_horse(driver, feeding, skip_feeding)
     
     count += 1
     is_it_break += 1
@@ -37,7 +37,7 @@ def take_care_horses(driver, feeding, horse):
     driver.find_element(By.ID, "nav-next").click()
     sleep()
 
-def take_care_one_horse(driver, feed):
+def take_care_one_horse(driver, feed, skip_feeding):
   horse_name = get_horse_name(driver)
 
   horse = DIVINES.get(horse_name)
@@ -61,7 +61,8 @@ def take_care_one_horse(driver, feed):
   do_task(driver)
   grooming(driver)
   sleeping(driver)
-  feeding(driver, feed)
+  print(skip_feeding)
+  feeding(driver, feed, skip_feeding=skip_feeding)
   
 def do_divine_action(driver, divine_type):
   print(divine_type)
