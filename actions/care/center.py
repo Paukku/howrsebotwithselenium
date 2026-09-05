@@ -70,72 +70,80 @@ def change_to_own_stable(driver):
   sleep()
 
 def change_to_mountain_stable(driver):
+  cancel_current_stable(driver)
+  search_right_stable(driver, "*bluppivuori klassinen")
 
-  registration_buttons = driver.find_elements(
-    By.XPATH,
-    "//button[.//span[normalize-space()='Peru majoitus']]"
-  )
+def select_right_stable(driver):
+  forest_skills = forest_skills_left(driver)
+  if forest_skills:
+    search_right_stable(driver, "varsat metsä 30pv")
+  else:
+    search_right_stable(driver, "varsat vuoret 30pv")
 
-  if not registration_buttons:
-    print("Hevonen on jo omassa tallissa. Talliin laitto ohitetaan.")
-    return
-  
-
-  # 1. Peruuta nykyinen majoitus
-  driver.find_element(
-    By.XPATH,
-    "//button[.//span[normalize-space()='Peru majoitus']]"
-  ).click()
-
-  # 2. Chromen oma vahvistusikkuna
-  alert = driver.switch_to.alert
-  alert.accept()
-
+# Help functions for stable management
+def cancel_current_stable(driver):
+  # 1. Peruuta nykyinen majoitus 
+  driver.find_element( By.XPATH, "//button[.//span[normalize-space()='Peru majoitus']]" ).click() 
+  # 2. Chromen oma vahvistusikkuna 
+  alert = driver.switch_to.alert 
+  alert.accept() 
   sleep()
 
-  # 3. Mene tallin rekisteröintiin
+def is_in_stable(driver):
+  return not bool(driver.find_elements(
+    By.CSS_SELECTOR,
+    "a[href*='centreInscription']"
+  ))
+
+def open_registration(driver):
   driver.find_element(
     By.CSS_SELECTOR,
     "a[href*='centreInscription']"
   ).click()
-
   sleep()
+
+def open_vip_search(driver):
+  driver.find_element(By.CSS_SELECTOR, "div.select-vip").click()
+  sleep()
+
+def select_stable(driver, search_name):
   driver.find_element(
-    By.CSS_SELECTOR,
-    "div.select-vip"
-  ).click()
-
-  sleep()
-  driver.find_element(
-    By.XPATH,
-    "//span[contains(@class, 'vip-search-label') and normalize-space()='*bluppivuori klassinen']"
-  ).click()
-  sleep()
-
-  row = driver.find_element(
       By.XPATH,
-      "//table[@id='table-0']/tbody/tr[1]"
-  )
-
-  cells = row.find_elements(By.TAG_NAME, "td")
-
-  # Tulosta debuggausta varten
-  for i, cell in enumerate(cells):
-      print(i, cell.text)
-
-  # 3 päivän sarake
-  three_day_cell = cells[6]
-
-  button = three_day_cell.find_element(
-    By.TAG_NAME,
-    "button"
-  )
-
-  if "disabled" in button.get_attribute("class"):
-    raise Exception("Ensimmäisessä tallissa ei ole vapaata 3 päivän paikkaa.")
-
-  button.click()
-
+      f"//span[contains(@class,'vip-search-label') and normalize-space()='{search_name}']"
+  ).click()
   sleep()
 
-  print("Ensimmäinen vuoritalli valittu 3 päiväksi.")
+def register_first_stable(driver):
+    row = driver.find_element(
+        By.XPATH,
+        "//table[@id='table-0']/tbody/tr[1]"
+    )
+
+    cells = row.find_elements(By.TAG_NAME, "td")
+
+    button = cells[8].find_element(By.TAG_NAME, "button")   # 30 pv sarake
+
+    button.click()
+    sleep()
+
+def search_right_stable(driver, search_name):
+
+  if is_in_stable(driver):
+    return
+
+  open_registration(driver)
+  open_vip_search(driver)
+  select_stable(driver, search_name)
+  register_first_stable(driver)
+
+def forest_skills_left(driver):
+  forest_walk = driver.find_element(By.ID, "boutonBalade-foret")
+
+  tooltip = forest_walk.get_attribute("data-tooltip")
+
+  if "gains" in tooltip:
+    print("Metsälenkkejä on vielä jäljellä")
+    return True
+  else:
+    print("Metsälenkit on jo tehty")
+    return False

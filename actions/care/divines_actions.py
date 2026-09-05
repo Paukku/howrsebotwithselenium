@@ -1,22 +1,24 @@
 from functools import partial
 from .divines_functions import (
-  click_divine_action,
-  click_if_enabled,
   scratch_divine,
   take_japanese_ufo,
   spice_horse,
-  click_button_by_text
+)
+from .care_utils import (
+  click_button_by_id, 
+  click_button_by_text, 
+  click_if_enabled
 )
 from .divines_care import solar_system_care
 
 
 DIVINE_ACTIONS = {
-  "UltraPowerForce": partial(click_divine_action, button_id="boutonMash"),
-  "Fire": partial(click_divine_action, button_id="boutonCarotte"),
-  "Fairy Tales": partial(click_divine_action, button_id="boutonFairyTalesRead"),
-  "Musketeers": partial(click_divine_action, button_id="boutonMusketeerAsk"),
-  "Celtic": partial(click_divine_action, button_id="boutonDivination"),
-  "Tea": partial(click_divine_action, button_id="boutonBoire"),
+  "UltraPowerForce": partial(click_button_by_id, button_id="boutonMash"),
+  "Fire": partial(click_button_by_id, button_id="boutonCarotte"),
+  "Fairy Tales": partial(click_button_by_id, button_id="boutonFairyTalesRead"),
+  "Musketeers": partial(click_button_by_id, button_id="boutonMusketeerAsk"),
+  "Celtic": partial(click_button_by_id, button_id="boutonDivination"),
+  "Tea": partial(click_button_by_id, button_id="boutonBoire"),
   "Maori": partial(click_button_by_text, text="Tarkkaile"),
 
   "Egyptian": scratch_divine,
