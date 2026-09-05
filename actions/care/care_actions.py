@@ -1,35 +1,31 @@
 from actions.care.feeding import feed_horse, automated_feed
 from utils.randomTime import short_sleep as sleep
-from actions.care.divines_functions import click_divine_button
 from selenium.webdriver.common.by import By
-
-def click_care_button(driver, button_id):
-    driver.find_element(By.ID, button_id).click()
-    sleep()
+from .care_utils import click_button_by_id
 
 def grooming(driver):
-  click_care_button(driver, "boutonPanser")
+  click_button_by_id(driver, "boutonPanser")
 
 def sleeping(driver):
-  click_care_button(driver, "boutonCoucher")
+  click_button_by_id(driver, "boutonCoucher")
 
 def give_water(driver):
-  click_care_button(driver, "boutonBoire")
+  click_button_by_id(driver, "boutonBoire")
 
 def give_carrot(driver):
-  click_care_button(driver, "boutonCarotte")
+  click_button_by_id(driver, "boutonCarotte")
 
 def stroke(driver):
-  click_care_button(driver, "boutonCaresser")
+  click_button_by_id(driver, "boutonCaresser")
 
 def give_mash(driver):
-  click_care_button(driver, "boutonMash")
+  click_button_by_id(driver, "boutonMash")
 
 def feeding(driver, feed, full_oats=False, skip_feeding=False):
   print(skip_feeding)
   if skip_feeding:
     return
-  driver.find_element(By.ID, "boutonNourrir").click()
+  click_button_by_id(driver, "boutonNourrir")
   sleep()
 
 
@@ -75,7 +71,7 @@ def equip_classic_gear(driver):
     return
 
 
-  click_divine_button(driver, "modele-tapis-classique-1x")
+  click_button_by_id(driver, "modele-tapis-classique-1x")
 
   # Satula
   driver.find_element(
@@ -84,7 +80,7 @@ def equip_classic_gear(driver):
   ).click()
   sleep()
 
-  click_divine_button(driver, "modele-selle-classique-3x")
+  click_button_by_id(driver, "modele-selle-classique-3x")
   sleep()
 
   # Suitset
@@ -94,7 +90,7 @@ def equip_classic_gear(driver):
   ).click()
   sleep()
 
-  click_divine_button(driver, "modele-bride-classique-3x")
+  click_button_by_id(driver, "modele-bride-classique-3x")
   sleep()
 
   driver.find_element(

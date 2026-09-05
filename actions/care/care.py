@@ -14,7 +14,7 @@ from .care_actions import grooming, feeding, sleeping, do_task
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 with open(BASE_DIR / "data" / "divines.json", encoding="utf-8") as f:
-    DIVINES = json.load(f)
+  DIVINES = json.load(f)
 
 def take_care_horses(driver, feeding, horse, skip_feeding):
   sleep()

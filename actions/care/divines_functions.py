@@ -4,69 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
-
-
-def click_divine_button(driver, button_id):
-  try:
-    button = WebDriverWait(driver, 3).until(
-      EC.element_to_be_clickable(
-        (By.ID, button_id)
-      )
-    )
-
-    driver.execute_script(
-      "arguments[0].click();",
-      button
-    )
-    sleep()
-
-  except Exception as e:
-    print(f"Divine action failed {button_id}: {e}")
-
-def click_button_by_text(driver, text):
-  try:
-    button = driver.find_element(
-      By.XPATH,
-      f"//button[.//span[contains(normalize-space(), '{text}')]]"
-    )
-
-    driver.execute_script("arguments[0].click();", button)
-    sleep()
-    return True
-
-  except NoSuchElementException:
-    return False
-
-def click_link_by_text(driver, text):
-  try:
-    link = driver.find_element(
-      By.XPATH,
-      f"//a[contains(normalize-space(), '{text}')]"
-    )
-
-    driver.execute_script("arguments[0].click();", link)
-    sleep()
-    return True
-
-  except NoSuchElementException:
-    return False
-
-def click_if_enabled(driver, button_id):
-  try:
-    button = driver.find_element(By.ID, button_id)
-
-    if "action-disabled" in button.get_attribute("class"):
-      return False
-
-    driver.execute_script("arguments[0].click();", button)
-    sleep()
-    return True
-
-  except:
-    return False
-
-def click_divine_action(driver, button_id):
-  click_divine_button(driver, button_id)
+from .care_utils import click_button_by_id, click_button_by_text, click_link_by_text, click_if_enabled
 
 def close_popup_if_present(driver):
   try:
@@ -154,9 +92,9 @@ def take_japanese_ufo(driver):
     print(f"UFO action failed: {e}")
 
 def take_walk(driver, walk, hours):
-  click_divine_button(driver, f"boutonBalade-{walk}")
+  click_button_by_id(driver, f"boutonBalade-{walk}")
   select_walk_duration(driver, walk, hours)
-  click_divine_button(driver, f"walk-{walk}-submit")
+  click_button_by_id(driver, f"walk-{walk}-submit")
 
 def select_walk_duration(driver, walk, hours):
   slider = driver.find_element(
@@ -177,7 +115,7 @@ def select_walk_duration(driver, walk, hours):
   element.click()
   sleep()
 
-  click_divine_button(driver, button_id="walk-voieLactee-submit")
+  click_button_by_id(driver, button_id="walk-voieLactee-submit")
   sleep()
 
 def get_energy(driver):
