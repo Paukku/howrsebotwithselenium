@@ -49,3 +49,10 @@ DIVINE_CARE = {
   #"Space": space_care,
   #"Reindeer": reindeer_care,
 }
+
+NO_COMPETITION_DIVINES = {
+  "Solar System",
+  "Nordic",
+  "Space",
+  "Reindeer",
+}

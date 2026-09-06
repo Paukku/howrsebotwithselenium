@@ -2,21 +2,29 @@ from selenium.webdriver.common.by import By
 from utils.randomTime import sleep
 from actions.care.care_actions import element_exists
 
-def competition(driver, amount, selectors, name):
+def competition(driver, amount, selectors, name, retry=True):
   for i in range(amount):
     print(f"{name} {i + 1}/{amount}")
 
-    for selector in selectors:
-      if element_exists(driver, By.CSS_SELECTOR, selector):
-        driver.find_element(
-          By.CSS_SELECTOR,
-          selector
-        ).click()
-        break
-    else:
-      raise Exception(f"{name}-kilpailua ei löytynyt")
+    while True:
+      for selector in selectors:
+        if element_exists(driver, By.CSS_SELECTOR, selector):
+            driver.find_element(
+                By.CSS_SELECTOR,
+                selector
+            ).click()
+            break
+      else:
+        if retry:
+            print(f"{name}-kilpailua ei vielä löytynyt → odotetaan")
+            sleep()
+            continue
 
-    sleep()
+        print(f"{name}-kilpailua ei löytynyt → skipataan")
+        break
+
+      sleep()
+      break
 
 # Classic
 def jumping_competition(driver, amount):
@@ -85,7 +93,7 @@ def trail_competition(driver, amount):
     driver,
     amount,
     [
-      "a.competition-trail-class-rainbow",
+    #  "a.competition-trail-class-rainbow",
       "a.competition-trail-class"
     ],
     "Trail"

@@ -5,6 +5,21 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from .care_utils import click_button_by_id, click_button_by_text, click_link_by_text, click_if_enabled
+from random import choice
+from actions.blup.competitions import (
+  jumping_competition,
+  cross_competition,
+  dressage_competition,
+  trot_competition,
+  galop_competition,
+  barrel_competition,
+  cutting_competition,
+  trail_competition,
+  reining_competition,
+  western_pleasure_competition
+)
+from actions.care.care_actions import get_specialization
+from selenium.webdriver.common.action_chains import ActionChains
 
 def close_popup_if_present(driver):
   try:
@@ -77,16 +92,18 @@ def take_japanese_ufo(driver):
       )
     )
 
-    ufo.click()
+    driver.execute_script(
+      "arguments[0].click();",
+      ufo
+    )
 
     WebDriverWait(driver, 10).until(
       EC.invisibility_of_element_located(
         (By.ID, ufo_id)
       )
     )
-
     sleep()
-    sleep()
+    click_outside_popup(driver)
 
   except Exception as e:
     print(f"UFO action failed: {e}")
@@ -121,3 +138,45 @@ def select_walk_duration(driver, walk, hours):
 def get_energy(driver):
   energy = driver.find_element(By.ID, "energie").text
   return int(energy)
+
+def click_outside_popup(driver):
+  try:
+    ActionChains(driver) \
+      .move_by_offset(150, 90) \
+      .click() \
+      .perform()
+
+    sleep()
+    return True
+  except Exception as e:
+    print(f"Popupin sulkeminen epäonnistui: {e}")
+
+def divine_competition(driver):
+  specialization = get_specialization(driver)
+  print(f"Divine kilpailu: {specialization}")
+
+  if specialization == "classic":
+    competitions = [
+      jumping_competition,
+      cross_competition,
+      dressage_competition,
+      trot_competition,
+      galop_competition,
+    ]
+
+  elif specialization == "western":
+    competitions = [
+      barrel_competition,
+      cutting_competition,
+      trail_competition,
+      reining_competition,
+      western_pleasure_competition,
+    ]
+
+  else:
+    print("Ei erikoistumista → ei kisata")
+    return
+
+  competition = choice(competitions)
+  print(f"Suoritetaan divine kilpailu: {competition.__name__}")
+  competition(driver, 6)

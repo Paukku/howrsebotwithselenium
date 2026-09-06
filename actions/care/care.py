@@ -7,9 +7,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import json
 from pathlib import Path
-from .divines_actions import DIVINE_ACTIONS, REWARD_BUTTONS, DIVINE_CARE
-from .divines_functions import close_popup_if_present
+from .divines_actions import DIVINE_ACTIONS, REWARD_BUTTONS, DIVINE_CARE, NO_COMPETITION_DIVINES
+from .divines_functions import close_popup_if_present, divine_competition
 from .care_actions import grooming, feeding, sleeping, do_task
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -55,6 +56,9 @@ def take_care_one_horse(driver, feed, skip_feeding):
         if care_divine:
           care_divine(driver, horse, feed)
         return
+    if divine_type not in NO_COMPETITION_DIVINES:
+      print("Suoritetaan divine kilpailu")
+      divine_competition(driver)
 
   handle_random_ufo(driver)
   center_not_automated(driver)
@@ -99,7 +103,7 @@ def get_divine_type(horse_name):
 
 def handle_random_ufo(driver):
   try:
-    ufo = WebDriverWait(driver, 2).until(
+    ufo = WebDriverWait(driver, 1).until(
       EC.element_to_be_clickable(
         (By.ID, "Ufo_0")
       )
