@@ -57,7 +57,6 @@ def take_care_one_horse(driver, feed, skip_feeding):
           care_divine(driver, horse, feed)
         return
     if divine_type not in NO_COMPETITION_DIVINES:
-      print("Suoritetaan divine kilpailu")
       divine_competition(driver)
 
   handle_random_ufo(driver)
@@ -65,7 +64,6 @@ def take_care_one_horse(driver, feed, skip_feeding):
   do_task(driver)
   grooming(driver)
   sleeping(driver)
-  print(skip_feeding)
   feeding(driver, feed, skip_feeding=skip_feeding)
   
 def do_divine_action(driver, divine_type):
@@ -103,15 +101,39 @@ def get_divine_type(horse_name):
 
 def handle_random_ufo(driver):
   try:
-    ufo = WebDriverWait(driver, 1).until(
-      EC.element_to_be_clickable(
-        (By.ID, "Ufo_0")
+    # Odotetaan hetki ilmestyykö UFO
+    ufo = WebDriverWait(driver, 2).until(
+        EC.presence_of_element_located(
+          (By.CSS_SELECTOR, ".ufo--moving_classic-ufo")
+        )
       )
+
+    print("Random UFO löytyi.")
+
+    driver.execute_script("arguments[0].click();", ufo)
+    print("UFO klikattu. Odotetaan popupia.")
+
+    # Odotetaan että popup ilmestyy
+    WebDriverWait(driver, 3).until(
+      EC.visibility_of_element_located((By.ID, "ufoBoxPopup"))
+    )
+    print("UFO-popup löytyi. Suljetaan.")
+
+    # Suljetaan popup ruksista
+    driver.execute_script("""
+      const btn = document.querySelector("#ufoBoxPopup .popupview__close");
+      if (btn) btn.click();
+    """)
+    print("Popupin sulkemista odotetaan.")
+
+    WebDriverWait(driver, 3).until(
+      EC.invisibility_of_element_located((By.ID, "ufoBoxPopup"))
     )
 
-    ufo.click()
-
-    close_popup_if_present(driver)
+    print("Random UFO käsitelty.")
 
   except TimeoutException:
+    # UFOa ei tullut, jatketaan normaalisti
     pass
+  except Exception as e:
+    print(f"Random UFO epäonnistui: {e}")

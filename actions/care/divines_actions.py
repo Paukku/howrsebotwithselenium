@@ -33,6 +33,7 @@ REWARD_BUTTONS = {
   "Tea": partial(click_if_enabled, button_id="boutonTeaKdow"),
   "Spice": partial(click_if_enabled, button_id="boutonSpiceKdow"),
   "Marble": partial(click_if_enabled, button_id="boutonRocksKdow"),
+  "Stellar": partial(click_if_enabled, button_id="boutonStellarKdow"),
   "Hrim": partial(click_if_enabled, button_id="doRosee" ),
   "Celtic": partial(click_button_by_text, text="Hae palkinto"),
   "Fairy Tales": partial(click_button_by_text, text="Hae palkinto"),

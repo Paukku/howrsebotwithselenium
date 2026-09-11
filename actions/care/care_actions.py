@@ -22,7 +22,6 @@ def give_mash(driver):
   click_button_by_id(driver, "boutonMash")
 
 def feeding(driver, feed, full_oats=False, skip_feeding=False):
-  print(skip_feeding)
   if skip_feeding:
     return
   click_button_by_id(driver, "boutonNourrir")

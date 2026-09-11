@@ -7,16 +7,8 @@ def center_automated(driver):
      print("Älä laita keskukseen")
   else:
     try:
-      driver.find_element(By.XPATH, "html/body/div[@id='container']/main/section/section/div[@id='console']/div[@id='sortable']/div[@id='col-left']/div[5]/div/div/div/div/div/div/div[@id='cheval-inscription']/a").click()
+      change_to_own_stable(driver)
       task_sleep()
-      task_sleep()
-      driver.find_element(By.ID, "tab-box-reserve").click()
-      task_sleep()
-      task_sleep()
-      driver.find_element(By.XPATH, "html/body/div[@id='container']/main/section/section/div[@id='boxContent']/table/tbody/tr[7]/td[9]/button").click()
-      task_sleep()
-      driver.find_element(By.ID, "boutonCoucher").click()
-      sleep()
     except:
       pass
 

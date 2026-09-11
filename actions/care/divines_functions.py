@@ -23,23 +23,13 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 def close_popup_if_present(driver):
   try:
-    popup = WebDriverWait(driver, 3).until(
-      EC.visibility_of_element_located(
-        (By.CSS_SELECTOR, ".popupview")
+    close_button = WebDriverWait(driver, 2).until(
+      EC.presence_of_element_located(
+        (By.CSS_SELECTOR, "#popupSpecialActionBox .popupview__close")
       )
     )
 
-    close_button = popup.find_element(
-      By.CSS_SELECTOR,
-      ".popupview__close"
-    )
-
-    driver.execute_script(
-      "arguments[0].click();",
-      close_button
-    )
-
-    sleep()
+    driver.execute_script("arguments[0].click();", close_button)
     return True
 
   except:
@@ -68,6 +58,7 @@ def scratch_divine(driver):
       )
     )
     claim_button.click()
+    sleep()
   except:
     pass
 
@@ -104,6 +95,7 @@ def take_japanese_ufo(driver):
     )
     sleep()
     click_outside_popup(driver)
+    sleep()
 
   except Exception as e:
     print(f"UFO action failed: {e}")
@@ -150,6 +142,8 @@ def click_outside_popup(driver):
     return True
   except Exception as e:
     print(f"Popupin sulkeminen epäonnistui: {e}")
+
+  sleep()
 
 def divine_competition(driver):
   specialization = get_specialization(driver)
