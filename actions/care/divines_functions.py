@@ -102,10 +102,10 @@ def take_japanese_ufo(driver):
 
 def take_walk(driver, walk, hours):
   click_button_by_id(driver, f"boutonBalade-{walk}")
-  select_walk_duration(driver, walk, hours)
+  select_walk_duration(driver, hours)
   click_button_by_id(driver, f"walk-{walk}-submit")
 
-def select_walk_duration(driver, walk, hours):
+def select_walk_duration(driver, hours):
   slider = driver.find_element(
     By.ID,
     f"walkvoieLacteeSlider"
@@ -126,6 +126,33 @@ def select_walk_duration(driver, walk, hours):
 
   click_button_by_id(driver, button_id="walk-voieLactee-submit")
   sleep()
+
+def take_nordic_and_space_walk(driver):
+  walks = driver.find_elements(
+    By.CSS_SELECTOR,
+    "a[baladespeciale='1']"
+  )
+
+  for walk in walks:
+    tooltip = walk.get_attribute("_tooltip")
+
+    if "+<strong" in tooltip:
+      walk_name = walk.find_element(
+        By.CSS_SELECTOR, ".text"
+      ).text
+
+      print(f"Erikoislenkki: {walk_name}")
+
+      driver.execute_script(
+        "arguments[0].click();",
+        walk
+      )
+
+      sleep()
+      return True
+
+  print("Oikeaa erikoislenkkiä ei löytynyt.")
+  return False
 
 def get_energy(driver):
   energy = driver.find_element(By.ID, "energie").text
