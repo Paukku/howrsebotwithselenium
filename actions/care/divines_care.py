@@ -1,45 +1,26 @@
-from .divines_functions import take_walk, get_energy
+from .divines_functions import take_walk, get_energy, take_right_special_walk
 from .care_actions import grooming, give_carrot, feeding, give_water, give_mash, stroke
 from selenium.webdriver.common.by import By
+from .care_utils import set_simple_walks
 
 def solar_system_care(driver, horse, feed):
   walk = horse.get("walk")
+  divineslider = "walkvoieLacteeSlider"
+  divineSubmit = "voieLactee"
   if not walk:
     return
 
-  take_walk(driver, walk, 5)
+  set_simple_walks(driver, enabled=True)
+  take_right_special_walk(driver)
   default_care(driver, feed, full_oats=True)
-  take_walk(driver, walk, 5)
+  take_right_special_walk(driver)
 
-def nordic_care(driver, horse, feed ):
-  walk = horse.get("walk")
-  if not walk:
-    return
-  
-  energy = get_energy(driver)
-  if energy >= 95:
-    take_walk(driver, walk, 3)
-  else:
-    take_walk(driver, walk, 2)
+def nordic_and_space_care(driver, horse, feed ):
+  set_simple_walks(driver, enabled=True)
+  take_right_special_walk(driver)
+  default_care(driver, feed, full_oats=True)
+  take_right_special_walk(driver)
 
-  default_care(driver, full_oats=True)
-
-  if energy >= 95:
-    take_walk(driver, walk, 3)
-  else:
-    take_walk(driver, walk, 2)
-
-def find_right_walk(driver):
-  forest_walk = driver.find_element(By.ID, "boutonBalade-niflheim")
-
-  tooltip = forest_walk.get_attribute("data-tooltip")
-
-  if "gains" in tooltip:
-    print("Metsälenkkejä on vielä jäljellä")
-    return True
-  else:
-    print("Metsälenkit on jo tehty")
-    return False
 
 def default_care(driver, feed, full_oats=False):
   grooming(driver)

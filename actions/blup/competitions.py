@@ -76,19 +76,21 @@ def competition(driver, amount, selectors, name, retry=True):
           break
 
         except NoSuchElementException:
-          print(f"Ei löytynyt: {selector}")
+            print(f"Ei löytynyt: {selector}")
 
         except StaleElementReferenceException:
-          print("Elementti vanheni → yritetään uudelleen")
+            print("Elementti vanheni → yritetään uudelleen")
 
-        if clicked:
+      # Kaikki selectorit käytiin läpi
+      if clicked:
           sleep()
           break
 
-        if retry:
+      # Yhtäkään nappia ei löytynyt
+      if retry:
           print(f"{name}-kilpailua ei vielä löytynyt → odotetaan")
           sleep()
-        else:
+      else:
           print(f"{name}-kilpailua ei löytynyt → skipataan")
           break
 # Classic

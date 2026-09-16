@@ -100,19 +100,24 @@ def take_japanese_ufo(driver):
   except Exception as e:
     print(f"UFO action failed: {e}")
 
-def take_walk(driver, walk, hours):
+def take_walk(driver, divineslider, divineSubmit, walk, hours):
   click_button_by_id(driver, f"boutonBalade-{walk}")
-  select_walk_duration(driver, hours)
+  select_walk_duration(driver, divineslider, divineSubmit, hours)
   click_button_by_id(driver, f"walk-{walk}-submit")
 
-def select_walk_duration(driver, hours):
+def select_walk_duration(driver, divineslider, divineSubmit, hours):
   slider = driver.find_element(
     By.ID,
-    f"walkvoieLacteeSlider"
+    divineslider
   )
   sleep()
+  print(f"slider id: {slider.get_attribute('id')}")
 
   value = hours * 2
+  print(f"divineslider: {divineslider}")
+  print(f"slider id: {slider.get_attribute('id')}")
+  print(f"divineSubmit: {divineSubmit}")
+  print(f"value: {value}")
   element = WebDriverWait(driver, 2).until(
     EC.element_to_be_clickable(
       (
@@ -124,10 +129,10 @@ def select_walk_duration(driver, hours):
   element.click()
   sleep()
 
-  click_button_by_id(driver, button_id="walk-voieLactee-submit")
+  click_button_by_id(driver, button_id=f"walk-{divineSubmit}-submit")
   sleep()
 
-def take_nordic_and_space_walk(driver):
+def take_right_special_walk(driver):
   walks = driver.find_elements(
     By.CSS_SELECTOR,
     "a[baladespeciale='1']"
@@ -136,10 +141,11 @@ def take_nordic_and_space_walk(driver):
   for walk in walks:
     tooltip = walk.get_attribute("_tooltip")
 
-    if "+<strong" in tooltip:
+    if "<b>+</b>" in tooltip:
       walk_name = walk.find_element(
-        By.CSS_SELECTOR, ".text"
-      ).text
+          By.CSS_SELECTOR,
+          ".text"
+      ).text.lower()
 
       print(f"Erikoislenkki: {walk_name}")
 
@@ -180,8 +186,8 @@ def divine_competition(driver):
     competitions = [
       jumping_competition,
       cross_competition,
-      dressage_competition,
       trot_competition,
+      dressage_competition,
       galop_competition,
     ]
 

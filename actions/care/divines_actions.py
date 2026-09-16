@@ -9,7 +9,7 @@ from .care_utils import (
   click_button_by_text, 
   click_if_enabled
 )
-from .divines_care import solar_system_care
+from .divines_care import solar_system_care, nordic_and_space_care
 
 
 DIVINE_ACTIONS = {
@@ -46,8 +46,8 @@ REWARD_BUTTONS = {
 
 DIVINE_CARE = {
   "Solar System": solar_system_care,
-  #"Nordic": nordic_care,
-  #"Space": space_care,
+  "Nordic": nordic_and_space_care,
+  "Space": nordic_and_space_care,
   #"Reindeer": reindeer_care,
 }
 
