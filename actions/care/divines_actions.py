@@ -42,6 +42,8 @@ REWARD_BUTTONS = {
   "Metallic": partial(click_if_enabled, button_id="boutonMetalsKdow"),
   "Musketeers": partial(click_button_by_text, text="Hanki"),
   "Maori": partial(click_button_by_text, text="Hae palkinto"),
+  "Space": partial(click_button_by_text, text="Hae palkinto"),
+  "Mordic": partial(click_button_by_text, text="Hae palkinto"),
   }
 
 DIVINE_CARE = {

@@ -103,7 +103,6 @@ def take_japanese_ufo(driver):
 def take_walk(driver, divineslider, divineSubmit, walk, hours):
   click_button_by_id(driver, f"boutonBalade-{walk}")
   select_walk_duration(driver, divineslider, divineSubmit, hours)
-  click_button_by_id(driver, f"walk-{walk}-submit")
 
 def select_walk_duration(driver, divineslider, divineSubmit, hours):
   slider = driver.find_element(
@@ -133,6 +132,20 @@ def select_walk_duration(driver, divineslider, divineSubmit, hours):
   sleep()
 
 def take_right_special_walk(driver):
+  walk = find_right_special_walk(driver)
+
+  if not walk:
+    return False
+
+  driver.execute_script(
+    "arguments[0].click();",
+    walk
+  )
+
+  sleep()
+  return True
+
+def find_right_special_walk(driver):
   walks = driver.find_elements(
     By.CSS_SELECTOR,
     "a[baladespeciale='1']"
@@ -142,23 +155,21 @@ def take_right_special_walk(driver):
     tooltip = walk.get_attribute("_tooltip")
 
     if "<b>+</b>" in tooltip:
-      walk_name = walk.find_element(
-          By.CSS_SELECTOR,
-          ".text"
-      ).text.lower()
-
-      print(f"Erikoislenkki: {walk_name}")
-
-      driver.execute_script(
-        "arguments[0].click();",
-        walk
-      )
-
-      sleep()
-      return True
+      return walk
 
   print("Oikeaa erikoislenkkiä ei löytynyt.")
   return False
+
+def check_right_special_walk(driver):
+  walk = find_right_special_walk(driver)
+
+  if not walk:
+    return False
+
+  return walk.find_element(
+    By.CSS_SELECTOR,
+    ".text"
+  ).text.lower()
 
 def get_energy(driver):
   energy = driver.find_element(By.ID, "energie").text

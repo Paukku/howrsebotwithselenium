@@ -10,6 +10,7 @@ from pathlib import Path
 from .divines_actions import DIVINE_ACTIONS, REWARD_BUTTONS, DIVINE_CARE, NO_COMPETITION_DIVINES
 from .divines_functions import close_popup_if_present, divine_competition
 from .care_actions import grooming, feeding, sleeping, do_task
+from actions.blup.training import select_auto_training
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -66,6 +67,57 @@ def take_care_one_horse(driver, feed, skip_feeding):
   sleeping(driver)
   feeding(driver, feed, skip_feeding=skip_feeding)
   
+def train_horse(driver):
+  if not is_training_finished(driver, "kestävyys"):
+    select_auto_training("kestävyys")
+    return
+
+  if not is_training_finished(driver, "nopeus"):
+    select_auto_training("nopeus")
+    return
+
+  if not is_training_finished(driver, "koulu"):
+    select_auto_training("koulu")
+    return
+
+  if not is_training_finished(driver, "ravi"):
+    select_auto_training("ravi")
+    return
+
+  if not is_training_finished(driver, "laukka"):
+    select_auto_training("laukka")
+    return
+
+  if not is_training_finished(driver, "este"):
+    select_auto_training("este")
+    return
+
+  return
+
+def is_training_finished(driver, skill):
+  rows = driver.find_elements(
+    By.CSS_SELECTOR,
+    "tr.dashed"
+  )
+
+  for row in rows:
+    name = row.find_element(
+      By.CSS_SELECTOR,
+      "td.first"
+    ).text.strip().lower()
+
+    if name != skill.lower():
+      continue
+
+    tooltip = row.find_element(
+      By.CSS_SELECTOR,
+      "td:nth-child(2)"
+    ).get_attribute("_tooltip")
+
+    return tooltip == "Koulutus on päättynyt!"
+
+  return False
+
 def do_divine_action(driver, divine_type):
   print(divine_type)
   action = DIVINE_ACTIONS.get(divine_type)

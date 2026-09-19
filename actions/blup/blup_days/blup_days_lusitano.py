@@ -55,34 +55,34 @@ BLUP_DAYS_LUSITANO = {
   "6y6m": ["koulu"],
 
   # Nopeus x1
-  "6y8m": ["nopeus"],
+  "6y8m": ["MAASTOKISAT"],
 
   # Ranta x4
-  "6y10m": ["ranta"],
-  "7y0m": ["ranta"],
-  "7y2m": ["ranta"],
-  "7y4m": ["ranta"],
+  "6y10m": ["MAASTOKISAT"],
+  "7y0m": ["MAASTOKISAT"],
+  "7y2m": ["este"],
+  "7y4m": ["este"],
 
   # Este x3
-  "7y6m": ["este"],
-  "7y8m": ["este"],
-  "7y10m": ["MAASTOKISAT"],
+  "7y6m": ["vuori"],
+  "7y8m": ["vuori"],
+  "7y10m": ["vuori"],
 
   # Maastokisat x3
-  "8y0m": ["MAASTOKISAT"],
-  "8y2m": ["MAASTOKISAT"],
-  "8y4m": ["MAASTOKISAT"],
+  "8y0m": ["vuori"],
+  "8y2m": ["vuori"],
+  "8y4m": ["vuori"],
 
   # Vuori x9
   "8y6m": ["vuori"],
   "8y8m": ["vuori"],
   "8y10m": ["vuori"],
-  "9y0m": ["vuori"],
-  "9y2m": ["vuori"],
-  "9y4m": ["vuori"],
-  "9y6m": ["vuori"],
-  "9y8m": ["vuori"],
-  "9y10m": ["vuori"],
+  "9y0m": ["este"],
+  "9y2m": ["este"],
+  "9y4m": ["este"],
+  "9y6m": ["este"],
+  "9y8m": ["este"],
+  "9y10m": ["este"],
 
   # Astutus
   "10y0m": ["astut"],
