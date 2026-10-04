@@ -161,6 +161,21 @@ def find_right_special_walk(driver):
   return False
 
 def check_right_special_walk(driver):
+
+  walks = driver.find_elements(
+    By.CSS_SELECTOR,
+    "a[baladespeciale='1']"
+  )
+
+  for walk in walks:
+    tooltip = walk.get_attribute("_tooltip")
+
+    if "<b>+</b>" in tooltip:
+      walk_id = walk.get_attribute("id")
+      return walk_id.removeprefix("boutonBalade-")
+
+  print("Oikeaa erikoislenkkiä ei löytynyt.")
+  return False
   walk = find_right_special_walk(driver)
 
   if not walk:

@@ -5,8 +5,6 @@ from .care_utils import set_simple_walks
 
 def solar_system_care(driver, horse, feed):
   walk = horse.get("walk")
-  divineslider = "walkvoieLacteeSlider"
-  divineSubmit = "voieLactee"
   if not walk:
     return
 
@@ -21,11 +19,15 @@ def nordic_and_space_care(driver, horse, feed ):
   special_walk_round(driver, horse)
 
 def special_walk_round(driver, horse):
-  if horse.get("group") == "nordic":
-    points_needed = get_points_needed(driver, "block-mondes-nordiques")
-  elif horse.get("group") == "space":
-    points_needed = get_points_needed(driver, "block-alien-gauge")
+  divine_type = horse.get("group")
+  if divine_type == "Nordic":
+    gauge_id = "block-mondes-nordiques"
 
+  elif divine_type == "Space":
+    gauge_id = "block-alien-gauge"
+
+  points_needed = get_points_needed(driver, gauge_id)
+  print(f"Points needed for {divine_type} divine: {points_needed}")
   set_simple_walks(driver, enabled=True)
 
   if points_needed < 9:
@@ -59,13 +61,15 @@ def get_points_needed(driver, gauge_id):
     gauge_id
   )
 
-  current = int(gauge.get_attribute("data-progression"))
-
-  goal = int(
-    driver.find_element(
-      By.CSS_SELECTOR,
-      f"#{gauge_id}-goal span"
-    ).text
+  current = int(
+    gauge.get_attribute("data-progression")
   )
+
+  goal_text = driver.find_element(
+    By.CSS_SELECTOR,
+    f"#{gauge_id}-goal span"
+  ).text
+
+  goal = int(goal_text.split()[0])
 
   return goal - current

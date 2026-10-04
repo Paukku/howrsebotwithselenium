@@ -58,7 +58,7 @@ def prepare_foal(driver):
 def blup_horse(driver, horse_id, feed):
   prepare_foal(driver)
   while True:
-
+    sleep()
     age = get_horse_age(driver) 
     
     blup_days = get_blup_days(driver)
@@ -75,8 +75,7 @@ def blup_horse(driver, horse_id, feed):
     blup_day(driver, blup_days, feed)
 
 def blup_day(driver, blup_days, feed):
-  
-  age = get_horse_age(driver)
+  age = get_horse_age(driver) 
 
   print(f"Hevosen ikä: {age}")
 
@@ -142,6 +141,7 @@ def blup_day(driver, blup_days, feed):
 
     elif task == "varusteet":
       equip_classic_gear(driver)
+      sleep()
 
     elif task == "lajinvaihto":
       change_specialization(driver)
@@ -154,6 +154,7 @@ def blup_day(driver, blup_days, feed):
 
   give_water(driver)
   feeding(driver, feed=feed)
+  sleep()
 
   # Päivä loppuun
   age_up(driver)
