@@ -9,7 +9,7 @@ from .care_utils import (
   click_button_by_text, 
   click_if_enabled
 )
-from .divines_care import solar_system_care
+from .divines_care import solar_system_care, nordic_and_space_care
 
 
 DIVINE_ACTIONS = {
@@ -33,6 +33,7 @@ REWARD_BUTTONS = {
   "Tea": partial(click_if_enabled, button_id="boutonTeaKdow"),
   "Spice": partial(click_if_enabled, button_id="boutonSpiceKdow"),
   "Marble": partial(click_if_enabled, button_id="boutonRocksKdow"),
+  "Stellar": partial(click_if_enabled, button_id="boutonStellarKdow"),
   "Hrim": partial(click_if_enabled, button_id="doRosee" ),
   "Celtic": partial(click_button_by_text, text="Hae palkinto"),
   "Fairy Tales": partial(click_button_by_text, text="Hae palkinto"),
@@ -41,11 +42,20 @@ REWARD_BUTTONS = {
   "Metallic": partial(click_if_enabled, button_id="boutonMetalsKdow"),
   "Musketeers": partial(click_button_by_text, text="Hanki"),
   "Maori": partial(click_button_by_text, text="Hae palkinto"),
+  "Space": partial(click_button_by_text, text="Hae palkinto"),
+  "Mordic": partial(click_button_by_text, text="Hae palkinto"),
   }
 
 DIVINE_CARE = {
   "Solar System": solar_system_care,
-  #"Nordic": nordic_care,
-  #"Space": space_care,
+  "Nordic": nordic_and_space_care,
+  "Space": nordic_and_space_care,
   #"Reindeer": reindeer_care,
+}
+
+NO_COMPETITION_DIVINES = {
+  "Solar System",
+  "Nordic",
+  "Space",
+  "Reindeer",
 }

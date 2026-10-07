@@ -8,8 +8,7 @@ from actions.care.center import change_to_own_stable, change_to_mountain_stable
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .blup_utils import get_horse_age, get_blup_days, get_new_foal_id
-from actions.care.divines_functions import click_divine_button, click_link_by_text 
-
+from actions.care.care_utils import click_button_by_id, click_button_by_text, click_link_by_text, click_if_enabled
 def run_blup(driver, amount, start_horse_id, feed):
   horse_id = start_horse_id
   amount = int(amount)
@@ -59,7 +58,7 @@ def prepare_foal(driver):
 def blup_horse(driver, horse_id, feed):
   prepare_foal(driver)
   while True:
-
+    sleep()
     age = get_horse_age(driver) 
     
     blup_days = get_blup_days(driver)
@@ -76,8 +75,7 @@ def blup_horse(driver, horse_id, feed):
     blup_day(driver, blup_days, feed)
 
 def blup_day(driver, blup_days, feed):
-  
-  age = get_horse_age(driver)
+  age = get_horse_age(driver) 
 
   print(f"Hevosen ikä: {age}")
 
@@ -143,6 +141,7 @@ def blup_day(driver, blup_days, feed):
 
     elif task == "varusteet":
       equip_classic_gear(driver)
+      sleep()
 
     elif task == "lajinvaihto":
       change_specialization(driver)
@@ -155,6 +154,7 @@ def blup_day(driver, blup_days, feed):
 
   give_water(driver)
   feeding(driver, feed=feed)
+  sleep()
 
   # Päivä loppuun
   age_up(driver)
@@ -204,7 +204,7 @@ def change_specialization(driver):
   sleep()
 
   # 3. Valitse Lännenratsastus
-  click_divine_button(
+  click_button_by_id(
     driver,
     "horseNameRespecialisationWestern"
   )

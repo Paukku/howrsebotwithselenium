@@ -22,7 +22,6 @@ def give_mash(driver):
   click_button_by_id(driver, "boutonMash")
 
 def feeding(driver, feed, full_oats=False, skip_feeding=False):
-  print(skip_feeding)
   if skip_feeding:
     return
   click_button_by_id(driver, "boutonNourrir")
@@ -99,8 +98,24 @@ def equip_classic_gear(driver):
   ).click()
   sleep()
 
+def get_specialization(driver):
+  western = driver.find_elements(
+    By.CSS_SELECTOR,
+    "#competition a.competition-barrel"
+  )
 
+  classic = driver.find_elements(
+    By.CSS_SELECTOR,
+    "#competition a.competition-trot"
+  )
 
+  if western:
+    return "western"
+
+  if classic:
+    return "classic"
+
+  return None
 
 def do_task(driver):
   try:

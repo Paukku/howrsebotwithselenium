@@ -7,9 +7,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import json
 from pathlib import Path
-from .divines_actions import DIVINE_ACTIONS, REWARD_BUTTONS, DIVINE_CARE
-from .divines_functions import close_popup_if_present
+from .divines_actions import DIVINE_ACTIONS, REWARD_BUTTONS, DIVINE_CARE, NO_COMPETITION_DIVINES
+from .divines_functions import close_popup_if_present, divine_competition
 from .care_actions import grooming, feeding, sleeping, do_task
+from actions.blup.training import select_auto_training
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -55,15 +57,67 @@ def take_care_one_horse(driver, feed, skip_feeding):
         if care_divine:
           care_divine(driver, horse, feed)
         return
+    if divine_type not in NO_COMPETITION_DIVINES:
+      divine_competition(driver)
 
   handle_random_ufo(driver)
   center_not_automated(driver)
   do_task(driver)
   grooming(driver)
   sleeping(driver)
-  print(skip_feeding)
   feeding(driver, feed, skip_feeding=skip_feeding)
   
+def train_horse(driver):
+  if not is_training_finished(driver, "kestävyys"):
+    select_auto_training("kestävyys")
+    return
+
+  if not is_training_finished(driver, "nopeus"):
+    select_auto_training("nopeus")
+    return
+
+  if not is_training_finished(driver, "koulu"):
+    select_auto_training("koulu")
+    return
+
+  if not is_training_finished(driver, "ravi"):
+    select_auto_training("ravi")
+    return
+
+  if not is_training_finished(driver, "laukka"):
+    select_auto_training("laukka")
+    return
+
+  if not is_training_finished(driver, "este"):
+    select_auto_training("este")
+    return
+
+  return
+
+def is_training_finished(driver, skill):
+  rows = driver.find_elements(
+    By.CSS_SELECTOR,
+    "tr.dashed"
+  )
+
+  for row in rows:
+    name = row.find_element(
+      By.CSS_SELECTOR,
+      "td.first"
+    ).text.strip().lower()
+
+    if name != skill.lower():
+      continue
+
+    tooltip = row.find_element(
+      By.CSS_SELECTOR,
+      "td:nth-child(2)"
+    ).get_attribute("_tooltip")
+
+    return tooltip == "Koulutus on päättynyt!"
+
+  return False
+
 def do_divine_action(driver, divine_type):
   print(divine_type)
   action = DIVINE_ACTIONS.get(divine_type)
@@ -99,15 +153,39 @@ def get_divine_type(horse_name):
 
 def handle_random_ufo(driver):
   try:
+    # Odotetaan hetki ilmestyykö UFO
     ufo = WebDriverWait(driver, 2).until(
-      EC.element_to_be_clickable(
-        (By.ID, "Ufo_0")
+        EC.presence_of_element_located(
+          (By.CSS_SELECTOR, ".ufo--moving_classic-ufo")
+        )
       )
+
+    print("Random UFO löytyi.")
+
+    driver.execute_script("arguments[0].click();", ufo)
+    print("UFO klikattu. Odotetaan popupia.")
+
+    # Odotetaan että popup ilmestyy
+    WebDriverWait(driver, 3).until(
+      EC.visibility_of_element_located((By.ID, "ufoBoxPopup"))
+    )
+    print("UFO-popup löytyi. Suljetaan.")
+
+    # Suljetaan popup ruksista
+    driver.execute_script("""
+      const btn = document.querySelector("#ufoBoxPopup .popupview__close");
+      if (btn) btn.click();
+    """)
+    print("Popupin sulkemista odotetaan.")
+
+    WebDriverWait(driver, 3).until(
+      EC.invisibility_of_element_located((By.ID, "ufoBoxPopup"))
     )
 
-    ufo.click()
-
-    close_popup_if_present(driver)
+    print("Random UFO käsitelty.")
 
   except TimeoutException:
+    # UFOa ei tullut, jatketaan normaalisti
     pass
+  except Exception as e:
+    print(f"Random UFO epäonnistui: {e}")

@@ -63,3 +63,19 @@ def click_if_enabled(driver, button_id):
 
   except:
     return False
+
+def set_simple_walks(driver, enabled):
+  title = driver.find_element(By.ID, "walk-head-title")
+
+  button = title.find_element(
+    By.CSS_SELECTOR,
+    "a.widget-action.config.vip"
+  )
+
+  is_enabled = "on" in button.get_attribute("class").split()
+
+  if is_enabled == enabled:
+    return
+
+  button.click()
+  sleep()
