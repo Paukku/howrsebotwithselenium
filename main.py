@@ -11,7 +11,6 @@ blup = config["blup"]
 feeding = blup["feeding"]
 horse_id = blup["horse_id"]
 amount = blup["amount"]
-
 #run_blup(driver, amount, horse_id, feeding)
 account = config["accounts"][0]
 

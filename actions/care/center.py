@@ -113,7 +113,7 @@ def register_first_stable(driver):
 
     cells = row.find_elements(By.TAG_NAME, "td")
 
-    button = cells[8].find_element(By.TAG_NAME, "button")   # 30 pv sarake
+    button = cells[6].find_element(By.TAG_NAME, "button")   # 30 pv sarake
 
     button.click()
     sleep()
