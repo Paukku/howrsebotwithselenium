@@ -152,6 +152,7 @@ def blup_day(driver, blup_days, feed):
     elif task == "ape":
       give_mash(driver)
 
+  #stroke(driver)
   give_water(driver)
   feeding(driver, feed=feed)
   sleep()

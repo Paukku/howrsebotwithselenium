@@ -1,5 +1,5 @@
 from utils.randomTime import sleep, random_wait
-from actions.care.center import center_not_automated
+from actions.care.center import center_automated
 import random
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
@@ -42,6 +42,9 @@ def take_care_horses(driver, feeding, horse, skip_feeding):
 def take_care_one_horse(driver, feed, skip_feeding):
   horse_name = get_horse_name(driver)
 
+  handle_random_ufo(driver)
+  center_automated(driver)
+
   horse = DIVINES.get(horse_name)
 
   if horse:
@@ -57,11 +60,10 @@ def take_care_one_horse(driver, feed, skip_feeding):
         if care_divine:
           care_divine(driver, horse, feed)
         return
-    if divine_type not in NO_COMPETITION_DIVINES:
-      divine_competition(driver)
+   # if divine_type not in NO_COMPETITION_DIVINES:
+    #  divine_competition(driver)
 
-  handle_random_ufo(driver)
-  center_not_automated(driver)
+  
   do_task(driver)
   grooming(driver)
   sleeping(driver)

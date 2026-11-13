@@ -4,7 +4,7 @@ from utils.items import has_item
 
 def center_automated(driver):
   if(has_item(driver, "hypnosin peite")):
-     print("Älä laita keskukseen")
+     pass
   else:
     try:
       change_to_own_stable(driver)
@@ -14,11 +14,10 @@ def center_automated(driver):
 
 def center_not_automated(driver):
   if(has_item(driver, "hypnosin peite")):
-    print("Älä laita keskukseen")
+    pass
   else:
     try:
       driver.find_element(By.XPATH, "html/body/div[@id='container']/main/section/section/div[@id='console']/div[@id='sortable']/div[@id='col-left']/div[3]/div/div/div/div/div/div/div[@id='cheval-inscription']/a").click()
-      task_sleep()
       task_sleep()
       driver.find_element(By.XPATH, "html/body/div[@id='container']/main/section/section/ul/li[@id='tab-box-reserve']/div/a").click()
       task_sleep()
@@ -36,8 +35,6 @@ def change_to_own_stable(driver):
   if not registration_buttons:
     print("Hevonen on jo omassa tallissa. Talliin laitto ohitetaan.")
     return
-
-  print("Laitetaan hevonen omaan talliin.")
 
   registration_buttons[0].click()
   sleep()
@@ -63,14 +60,14 @@ def change_to_own_stable(driver):
 
 def change_to_mountain_stable(driver):
   cancel_current_stable(driver)
-  search_right_stable(driver, "*bluppivuori klassinen")
+  search_right_stable(driver, "*bluppivuori klassinen", 6)
 
 def select_right_stable(driver):
   forest_skills = forest_skills_left(driver)
   if forest_skills:
-    search_right_stable(driver, "varsat metsä 30pv")
+    search_right_stable(driver, "varsat metsä 30pv", 8)
   else:
-    search_right_stable(driver, "varsat vuoret 30pv")
+    search_right_stable(driver, "varsat vuoret 30pv", 8)
 
 # Help functions for stable management
 def cancel_current_stable(driver):
@@ -105,7 +102,7 @@ def select_stable(driver, search_name):
   ).click()
   sleep()
 
-def register_first_stable(driver):
+def register_first_stable(driver, days):
     row = driver.find_element(
         By.XPATH,
         "//table[@id='table-0']/tbody/tr[1]"
@@ -113,12 +110,12 @@ def register_first_stable(driver):
 
     cells = row.find_elements(By.TAG_NAME, "td")
 
-    button = cells[8].find_element(By.TAG_NAME, "button")   # 30 pv sarake
+    button = cells[days].find_element(By.TAG_NAME, "button")   # 30 pv sarake
 
     button.click()
     sleep()
 
-def search_right_stable(driver, search_name):
+def search_right_stable(driver, search_name, days):
 
   if is_in_stable(driver):
     return
@@ -126,7 +123,7 @@ def search_right_stable(driver, search_name):
   open_registration(driver)
   open_vip_search(driver)
   select_stable(driver, search_name)
-  register_first_stable(driver)
+  register_first_stable(driver, days)
 
 def forest_skills_left(driver):
   forest_walk = driver.find_element(By.ID, "boutonBalade-foret")
