@@ -1,14 +1,14 @@
-from .divines_functions import take_walk, get_energy, take_right_special_walk, check_right_special_walk, click_button_by_text
+from .divines_functions import take_walk, take_right_special_walk, check_right_special_walk, click_button_by_text
 from .care_actions import grooming, give_carrot, feeding, give_water, give_mash, stroke
 from selenium.webdriver.common.by import By
-from .care_utils import set_simple_walks
+from .care_utils import set_automates
 
 def solar_system_care(driver, horse, feed):
   walk = horse.get("walk")
   if not walk:
     return
 
-  set_simple_walks(driver, enabled=True)
+  set_automates(driver, "walk", enabled=True)
   take_right_special_walk(driver)
   default_care(driver, feed, full_oats=True)
   take_right_special_walk(driver)
@@ -28,12 +28,12 @@ def special_walk_round(driver, horse):
 
   points_needed = get_points_needed(driver, gauge_id)
   print(f"Points needed for {divine_type} divine: {points_needed}")
-  set_simple_walks(driver, enabled=True)
+  set_automates(driver, "walk", enabled=True)
 
   if points_needed < 9:
     walk = check_right_special_walk(driver)
 
-    set_simple_walks(driver, enabled=False)
+    set_automates(driver, "walk", enabled=False)
     divineslider = f"walk{walk}Slider"
     divineSubmit = walk
 

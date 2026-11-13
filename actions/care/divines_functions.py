@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from .care_utils import click_button_by_id, click_button_by_text, click_link_by_text, click_if_enabled
 from random import choice
-from actions.blup.competitions import (
+from actions.competitions.competitions import (
   jumping_competition,
   cross_competition,
   dressage_competition,
@@ -176,19 +176,6 @@ def check_right_special_walk(driver):
 
   print("Oikeaa erikoislenkkiä ei löytynyt.")
   return False
-  walk = find_right_special_walk(driver)
-
-  if not walk:
-    return False
-
-  return walk.find_element(
-    By.CSS_SELECTOR,
-    ".text"
-  ).text.lower()
-
-def get_energy(driver):
-  energy = driver.find_element(By.ID, "energie").text
-  return int(energy)
 
 def click_outside_popup(driver):
   try:

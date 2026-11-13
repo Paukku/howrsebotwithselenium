@@ -64,8 +64,8 @@ def click_if_enabled(driver, button_id):
   except:
     return False
 
-def set_simple_walks(driver, enabled):
-  title = driver.find_element(By.ID, "walk-head-title")
+def set_automates(driver, automate, enabled):
+  title = driver.find_element(By.ID, f"{automate}-head-title")
 
   button = title.find_element(
     By.CSS_SELECTOR,
@@ -79,3 +79,8 @@ def set_simple_walks(driver, enabled):
 
   button.click()
   sleep()
+
+
+def get_energy(driver):
+  energy = driver.find_element(By.ID, "energie").text
+  return int(energy)
