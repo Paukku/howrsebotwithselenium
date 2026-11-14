@@ -2,7 +2,7 @@ from login import log_in
 import json
 from actions.care.care import take_care_horses
 from actions.blup.blup import run_blup
-from actions.training.training import run_training
+from actions.training.train_horses import run_training
 with open('config.json') as f:
   config = json.load(f)
 
@@ -13,7 +13,7 @@ feeding = blup["feeding"]
 horse_id = blup["horse_id"]
 amount = blup["amount"]
 
-#run_blup(driver, amount, horse_id, feeding)
+run_blup(driver, amount, horse_id, feeding)
 account = config["accounts"][0]
 
 for account in config["accounts"]:
@@ -35,4 +35,4 @@ training = config["training"]
 feeding = training["feeding"]
 horse_id = training["horse_id"]
 amount = training["amount"]
-run_training(driver, amount, horse_id, feeding)
+#run_training(driver, amount, horse_id, feeding)

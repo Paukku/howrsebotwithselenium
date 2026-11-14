@@ -23,17 +23,13 @@ training, competitions, breeding, and BLUP logic into dedicated modules.
 -   Automated training and riding
     -   Forest and mountain training
     -   Skill-specific training
-    -   Age-dependent training plans
 -   Automated competitions
-    -   Jumping
-    -   Dressage
     -   Support for different competition variants
 -   Automated BLUP process
     -   Age-based training plans
     -   Breed-specific BLUP schedules
     -   Foal preparation
     -   Aging
-    -   Breeding
 -   Breed-specific automation
     -   Different BLUP schedules can be selected automatically based on
         the horse's breed
@@ -218,9 +214,7 @@ Possible future improvements include:
 
 ## Project status
 
-The project is an actively developed personal programming project. Its
-architecture and functionality are continuously being improved as new
-automation requirements arise.
+The project is an actively developed personal programming project. Its architecture and functionality are continuously being improved as new automation requirements arise.
 
 ------------------------------------------------------------------------
 
