@@ -1,0 +1,25 @@
+{
+  "accounts": [
+    {
+      "name": "your_username",
+      "feeding": "automated",
+      "horses": [
+        {"id": 12345678, "amount": 1, "skip_feeding": false}
+      ]
+    }
+  ],
+  "blup": {
+    "enabled": true,
+    "horse_id": 12345678,
+    "feeding": "automated",
+    "test_mode": true,
+    "amount": 1
+  },
+  "training": {
+    "enabled": true,
+    "horse_id": 12345678,
+    "feeding": "automated",
+    "test_mode": true,
+    "amount": 1
+  }
+}

@@ -51,33 +51,43 @@ training, competitions, breeding, and BLUP logic into dedicated modules.
 -   CSS selectors and XPath for browser interaction
 
 ## Project structure
-
 The project is organized around actions and reusable utilities instead
 of putting the entire automation flow into one large file.
-
-``` text
-howrsebot/
+```
+.
+├── main.py                  # Entry point
+├── login.py                 # Browser setup and login
+├── config.example.json      # Example configuration (copy to config.json)
+├── .env.example             # Example credentials file (copy to .env)
+├── requirements.txt
 ├── actions/
-│   ├── care/
-│   │   └── care_actions.py
+│   ├── blup/                # BLUP breeding automation
+│   │   ├── blup.py
+│   │   ├── blup_utils.py
+│   │   └── blup_days/       # Breed-specific BLUP schedules
+│   │       ├── blup_days.py
+│   │       ├── blup_days_akhaltekke.py
+│   │       ├── blup_days_holstein.py
+│   │       └── blup_days_lusitano.py
+│   ├── care/                # Daily horse care
+│   │   ├── care.py
+│   │   ├── care_actions.py
+│   │   ├── care_utils.py
+│   │   ├── center.py        # Select right stable for a horse
+│   │   ├── feeding.py
+│   │   ├── divines_actions.py   # Divines' own tasks and rewards
+│   │   ├── divines_care.py      # Custom care for divine groups
+│   │   └── divines_functions.py # Helpers (scratching, UFO catching)
 │   ├── competitions/
-│   │   └── competition_actions.py
-│   ├── training/
-│   │   └── ...
-│   └── ...
-├── accounts/
-│   └── ...
-├── blup/
-│   ├── blup.py
-│   ├── blup_utils.py
-│   ├── blup_days_holstein.py
-│   └── blup_days_lusitano.py
-├── utils/
-│   ├── randomTime.py
-│   └── ...
-├── config.json
-├── divines.json
-└── main.py
+│   │   └── competitions.py
+│   └── training/
+│       ├── training.py
+│       └── train_horses.py
+├── data/
+│   └── divines.json         # List of all Divines
+└── utils/
+    ├── items.py             # Check if horse have specific item
+    └── randomTime.py        # Randomized delays
 ```
 
 The exact structure may evolve as the project is developed further.
@@ -216,6 +226,30 @@ Possible future improvements include:
 
 The project is an actively developed personal programming project. Its architecture and functionality are continuously being improved as new automation requirements arise.
 
+
+## Getting started
+
+### Requirements
+- Python 3.12 (or the version you tested with)
+- Google Chrome (or whichever browser `login.py` uses)
+
+### Installation
+```bash
+git clone https://github.com/Paukku/howrsebotwithselenium.git
+cd howrsebotwithselenium
+pip install -r requirements.txt
+```
+
+### Configuration
+1. Copy `.env.example` to `.env` and fill in your credentials.
+2. Copy `config.example.json` to `config.json` and edit it (see the field reference below).
+
+Both files are listed in `.gitignore` and are never committed.
+
+### Running
+```bash
+python main.py
+```
 ------------------------------------------------------------------------
 
 **Technologies demonstrated:** Python · Selenium · Web automation · JSON
