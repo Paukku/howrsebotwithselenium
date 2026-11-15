@@ -2,10 +2,10 @@ import re
 from selenium.webdriver.common.by import By
 from .blup_days.blup_days import BLUP_DAYS
 from selenium.webdriver.common.by import By
-
+from utils.randomTime import short_sleep as sleep
 
 def get_horse_age(driver):
-
+  sleep()
   age_cell = driver.find_element(
     By.XPATH,
     "//strong[text()='Ikä:']/parent::td"

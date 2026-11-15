@@ -6,7 +6,8 @@ from actions.blup.blup import run_blup
 from actions.care.care import take_care_horses
 from actions.training.train_horses import run_training
 from login import log_in
-
+from actions.care.care_actions import equip_classic_gear
+from utils.randomTime import sleep
 
 def load_config(path):
   try:
@@ -45,12 +46,21 @@ def run_training_task(driver, config):
     driver, training["amount"], training["horse_id"], training.get("feeding")
   )
 
+def run_testing_task(driver, config):
+  testing = config["testing"]
+  driver.get("https://www.howrse.fi/elevage/chevaux/")
+  sleep()
+  
+  driver.get(f"https://www.howrse.fi/elevage/chevaux/cheval?id={testing['horse_id']}")
+  equip_classic_gear(driver)
+
 
 # Order matters: tasks always run in this order
 TASKS = {
   "care": run_care_task,
   "blup": run_blup_task,
   "training": run_training_task,
+  "testing": run_testing_task,
 }
 
 

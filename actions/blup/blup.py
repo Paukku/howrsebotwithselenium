@@ -13,17 +13,14 @@ from actions.care.care_utils import click_button_by_id, click_button_by_text, cl
 def run_blup(driver, amount, start_horse_id, feed):
   horse_id = start_horse_id
   amount = int(amount)
-  driver.get("http://www.howrse.fi/elevage/chevaux/")
+  driver.get("https://www.howrse.fi/elevage/chevaux/")
   sleep()
-
   driver.get(f"https://www.howrse.fi/elevage/chevaux/cheval?id={horse_id}")
-  sleep()
 
   for i in range(amount):
 
     print(f"=== BLUP {i + 1}/{amount} ===")
     print(f"Hevonen: {horse_id}")
-    sleep()
 
     blup_horse(driver, horse_id, feed)
 
@@ -59,7 +56,6 @@ def prepare_foal(driver):
 def blup_horse(driver, horse_id, feed):
   prepare_foal(driver)
   while True:
-    sleep()
     age = get_horse_age(driver) 
     
     blup_days = get_blup_days(driver)
@@ -77,8 +73,6 @@ def blup_horse(driver, horse_id, feed):
 
 def blup_day(driver, blup_days, feed):
   age = get_horse_age(driver) 
-
-  print(f"Hevosen ikä: {age}")
 
   if age not in blup_days:
     print(f"Ikää {age} ei löydy BLUP_DAYS-listasta.")
@@ -142,7 +136,6 @@ def blup_day(driver, blup_days, feed):
 
     elif task == "varusteet":
       equip_classic_gear(driver)
-      sleep()
 
     elif task == "lajinvaihto":
       change_specialization(driver)
@@ -162,7 +155,6 @@ def blup_day(driver, blup_days, feed):
   age_up(driver)
 
 def age_up(driver):
-
   try:
     button = WebDriverWait(driver, 3).until(
       EC.element_to_be_clickable(

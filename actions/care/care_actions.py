@@ -2,6 +2,7 @@ from actions.care.feeding import feed_horse, automated_feed
 from utils.randomTime import short_sleep as sleep
 from selenium.webdriver.common.by import By
 from .care_utils import click_button_by_id
+from utils.waits import click_when_ready, try_click
 
 def grooming(driver):
   click_button_by_id(driver, "boutonPanser")
@@ -40,63 +41,37 @@ def feeding(driver, feed, full_oats=False, skip_feeding=False):
 def element_exists(driver, by, value):
   return len(driver.find_elements(by, value)) > 0
 
-def equip_classic_gear(driver):
-  if element_exists(
-    driver,
+# Locators (put these near the top of care_actions.py)
+SPECIALISATION_SUBMIT = (
     By.CSS_SELECTOR,
-    "#specialisationClassique button[type='submit']"
-):
-    driver.find_element(
-      By.CSS_SELECTOR,
-      "#specialisationClassique button[type='submit']"
-    ).click()
+    "#specialisationClassique button[type='submit']",
+)
+EQUIP_LINK = (By.XPATH, "//a[.//span[normalize-space()='Varusta hevonen']]")
+SADDLE_TAB = (By.XPATH, "//div[contains(@class, 'type')][normalize-space()='Satula']")
+BRIDLE_TAB = (By.XPATH, "//div[contains(@class, 'type')][normalize-space()='Suitset']")
+CONFIRM_GEAR = (By.XPATH, "//button[normalize-space()='Vahvista varusteet']")
 
-    sleep()
+def equip_classic_gear(driver):
+  # Optional step: only present for some horses
+  try_click(driver, SPECIALISATION_SUBMIT)
 
-  if element_exists(
-    driver,
-    By.XPATH,
-    "//a[.//span[normalize-space()='Varusta hevonen']]"
-  ):
-    driver.find_element(
-        By.XPATH,
-        "//a[.//span[normalize-space()='Varusta hevonen']]"
-    ).click()
-
-    sleep()
-  else:
-    # Jos nappia ei ole, hevonen saattaa olla jo varustettu.
+  # If the link never appears, the horse is probably already equipped
+  if not try_click(driver, EQUIP_LINK):
     print("Hevonen on mahdollisesti jo varustettu.")
     return
 
+  # From here on every step is required: a missing element raises
+  # TimeoutException instead of confirming incomplete gear.
+  click_when_ready(driver, (By.ID, "modele-tapis-classique-1x"), use_js=True)
 
-  click_button_by_id(driver, "modele-tapis-classique-1x")
+  click_when_ready(driver, SADDLE_TAB)
+  click_when_ready(driver, (By.ID, "modele-selle-classique-3x"), use_js=True)
 
-  # Satula
-  driver.find_element(
-    By.XPATH,
-    "//div[contains(@class, 'type')][normalize-space()='Satula']"
-  ).click()
-  sleep()
+  click_when_ready(driver, BRIDLE_TAB)
+  click_when_ready(driver, (By.ID, "modele-bride-classique-3x"), use_js=True)
 
-  click_button_by_id(driver, "modele-selle-classique-3x")
-  sleep()
+  click_when_ready(driver, CONFIRM_GEAR)
 
-  # Suitset
-  driver.find_element(
-      By.XPATH,
-      "//div[contains(@class, 'type')][normalize-space()='Suitset']"
-  ).click()
-  sleep()
-
-  click_button_by_id(driver, "modele-bride-classique-3x")
-  sleep()
-
-  driver.find_element(
-    By.XPATH,
-    "//button[normalize-space()='Vahvista varusteet']"
-  ).click()
-  sleep()
 
 def get_specialization(driver):
   western = driver.find_elements(
