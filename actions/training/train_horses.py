@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from utils.randomTime import short_sleep as sleep
+from utils.random_time import short_sleep as sleep
 
 from actions.care.care_actions import (
   feeding,

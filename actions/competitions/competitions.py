@@ -7,7 +7,7 @@ from selenium.common.exceptions import (
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from utils.randomTime import sleep
+from utils.random_time import sleep
 
 
 def close_error_popup(driver):
