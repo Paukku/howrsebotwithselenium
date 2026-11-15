@@ -1,5 +1,7 @@
-from utils.randomTime import short_sleep, sleep
 from selenium.webdriver.common.by import By
+
+from utils.random_time import short_sleep, sleep
+
 
 def feed_horse(driver, full_oats=False):
   hay_current, hay_target = get_feed_values(driver, "fourrage")

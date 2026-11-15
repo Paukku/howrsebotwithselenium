@@ -1,6 +1,9 @@
-from utils.randomTime import sleep, task_sleep
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import WebDriverException
+
 from utils.items import has_item
+from utils.random_time import sleep, task_sleep
+
 
 def center_automated(driver):
   if(has_item(driver, "hypnosin peite")):
@@ -9,7 +12,7 @@ def center_automated(driver):
     try:
       change_to_own_stable(driver)
       task_sleep()
-    except:
+    except WebDriverException:
       pass
 
 def center_not_automated(driver):
@@ -23,7 +26,7 @@ def center_not_automated(driver):
       task_sleep()
       driver.find_element(By.XPATH, "html/body/div[@id='container']/main/section/section/div[@id='boxContent']/table/tbody/tr[3]/td[10]/button").click()
       task_sleep()
-    except:
+    except WebDriverException:
       pass
 
 def change_to_own_stable(driver):

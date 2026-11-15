@@ -1,12 +1,14 @@
+from selenium.common.exceptions import (
+  ElementClickInterceptedException,
+  NoSuchElementException,
+  StaleElementReferenceException,
+  TimeoutException,
+)
 from selenium.webdriver.common.by import By
-from utils.randomTime import sleep
-from actions.care.care_actions import element_exists
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import ElementClickInterceptedException
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.support.ui import WebDriverWait
+from utils.randomTime import sleep
+
 
 def close_error_popup(driver):
   try:

@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from utils.randomTime import sleep
+from utils.random_time import sleep
 
 BASE_URL = "https://www.howrse.fi"
 
@@ -50,6 +50,7 @@ def log_in():
     driver.find_element(By.ID, "password").send_keys(password)
     sleep()
     driver.find_element(By.ID, "authentificationSubmit").click()
+    sleep()
   except Exception:
     driver.quit()  # do not leave a browser window open if login fails
     raise

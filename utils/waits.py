@@ -4,7 +4,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from utils.randomTime import sleep
+from utils.random_time import sleep, tiny_sleep
 
 
 def wait_clickable(driver, locator, timeout=10):
@@ -15,7 +15,7 @@ def wait_clickable(driver, locator, timeout=10):
     return WebDriverWait(driver, timeout).until(EC.element_to_be_clickable(locator))
 
 
-def click_when_ready(driver, locator, timeout=10, use_js=False, pause=sleep):
+def click_when_ready(driver, locator, timeout=10, use_js=False, pause=sleep, before=tiny_sleep):
     """Wait for the element, click it, then pause.
 
     use_js=True clicks via JavaScript, which ignores overlays that would
@@ -23,6 +23,8 @@ def click_when_ready(driver, locator, timeout=10, use_js=False, pause=sleep):
     clickable in time.
     """
     element = wait_clickable(driver, locator, timeout)
+    if before:
+      before()
     if use_js:
         driver.execute_script("arguments[0].click();", element)
     else:

@@ -1,16 +1,12 @@
 from functools import partial
+
+from .care_utils import click_button_by_id, click_button_by_text, click_if_enabled
+from .divines_care import nordic_and_space_care, solar_system_care
 from .divines_functions import (
   scratch_divine,
-  take_japanese_ufo,
   spice_horse,
+  take_japanese_ufo,
 )
-from .care_utils import (
-  click_button_by_id, 
-  click_button_by_text, 
-  click_if_enabled
-)
-from .divines_care import solar_system_care, nordic_and_space_care
-
 
 DIVINE_ACTIONS = {
   "UltraPowerForce": partial(click_button_by_id, button_id="boutonMash"),

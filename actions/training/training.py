@@ -1,5 +1,6 @@
 from actions.care.divines_functions import click_button_by_id
 
+
 def forest_walk(driver):
   # Metsän valinta
   click_button_by_id(driver, button_id="boutonBalade-foret")

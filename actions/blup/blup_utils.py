@@ -1,43 +1,42 @@
 import re
+
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+from utils.random_time import short_sleep
+from utils.waits import click_when_ready
+
 from .blup_days.blup_days import BLUP_DAYS
-from selenium.webdriver.common.by import By
-from utils.randomTime import short_sleep as sleep
+
+AGE_CELL = (By.XPATH, "//strong[text()='Ikä:']/parent::td")
+
+
+def parse_age(text):
+    """'1 vuosi 6 kuukautta' -> '1y6m', '6 kuukautta' -> '0y6m', 'muutama tunti' -> 'foal'."""
+    if "muutama tunti" in text:
+        return "foal"
+    years = re.search(r"(\d+)\s+vu(?:osi|otta)", text)
+    months = re.search(r"(\d+)\s+kuukau(?:si|tta)", text)
+    if not (years or months):
+        raise ValueError(f"Ikää ei voitu lukea: {text}")
+    return f"{int(years[1]) if years else 0}y{int(months[1]) if months else 0}m"
+
 
 def get_horse_age(driver):
-  sleep()
-  age_cell = driver.find_element(
-    By.XPATH,
-    "//strong[text()='Ikä:']/parent::td"
-  )
+    cell = WebDriverWait(driver, 10).until(EC.visibility_of_element_located(AGE_CELL))
+    return parse_age(cell.text)
 
-  age_text = age_cell.text
 
-  if "muutama tunti" in age_text:
-    return "foal"
-
-  # Esim. "1 vuosi 6 kuukautta" tai "2 vuotta"
-  match = re.search(
-    r"(\d+)\s+vu(?:osi|otta)(?:\s+(\d+)\s+kuukautta)?",
-    age_text
-  )
-
-  if match:
-    years = int(match.group(1))
-    months = int(match.group(2)) if match.group(2) else 0
-    return f"{years}y{months}m"
-
-  # Esim. "6 kuukautta"
-  match = re.search(
-    r"(\d+)\s+kuukautta",
-    age_text
-  )
-
-  if match:
-    months = int(match.group(1))
-    return f"0y{months}m"
-
-  raise ValueError(f"Ikää ei voitu lukea: {age_text}")
+def age_up(driver):
+    old_age = get_horse_age(driver)
+    click_when_ready(driver, (By.ID, "boutonVieillir"), timeout=3, use_js=True, pause=short_sleep)
+    click_when_ready(driver, (By.CSS_SELECTOR, "form#age button[type='submit']"), pause=short_sleep)
+    # Fails with TimeoutException if the age does not change
+    WebDriverWait(driver, 15, ignored_exceptions=(StaleElementReferenceException,)).until(
+        lambda d: get_horse_age(d) != old_age
+    )
 
 def get_blup_days(driver):
   breed = get_horse_breed(driver)

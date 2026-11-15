@@ -1,25 +1,37 @@
 import random
-from utils.randomTime import sleep
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
-from .care_utils import click_button_by_id, click_button_by_text, click_link_by_text, click_if_enabled
 from random import choice
-from actions.competitions.competitions import (
-  jumping_competition,
-  cross_competition,
-  dressage_competition,
-  trot_competition,
-  galop_competition,
-  barrel_competition,
-  cutting_competition,
-  trail_competition,
-  reining_competition,
-  western_pleasure_competition
-)
-from actions.care.care_actions import get_specialization
+
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
+
+from actions.care.care_actions import get_specialization
+from actions.competitions.competitions import (
+  barrel_competition,
+  cross_competition,
+  cutting_competition,
+  dressage_competition,
+  galop_competition,
+  jumping_competition,
+  reining_competition,
+  trail_competition,
+  trot_competition,
+  western_pleasure_competition,
+)
+from utils.random_time import sleep
+
+from .care_utils import (
+  click_button_by_id,
+  click_button_by_text,
+)
+from utils.waits import try_click
+
+POPUP_CLOSE_BUTTON = (By.CSS_SELECTOR, "#popupSpecialActionBox .popupview__close")
+SCRATCH_CARD = "[id^='divine-scratch-animation-']"
+CLAIM_BUTTON = (By.CSS_SELECTOR, ".divine-scratch-background button")
+
 
 def close_popup_if_present(driver):
   try:
@@ -32,35 +44,20 @@ def close_popup_if_present(driver):
     driver.execute_script("arguments[0].click();", close_button)
     return True
 
-  except:
+  except TimeoutException:
     return False
 
 #shark horses and egyptian
 def scratch_divine(driver):
-  try:
-    scratch = driver.find_element(
-      By.CSS_SELECTOR,
-      "[id^='divine-scratch-animation-']"
-    )
+    """Scratch the divine's scratch card if there is one, then claim the reward."""
+    cards = driver.find_elements(By.CSS_SELECTOR, SCRATCH_CARD)
+    if cards:
+        driver.execute_script("arguments[0].click();", cards[0])
+        sleep()
 
-    driver.execute_script(
-      "arguments[0].click();",
-      scratch
-    )
-  except:
-    pass
-
-  sleep()
-  try:
-    claim_button = WebDriverWait(driver, 10).until(
-    EC.element_to_be_clickable(
-      (By.CSS_SELECTOR, ".divine-scratch-background button")
-      )
-    )
-    claim_button.click()
-    sleep()
-  except:
-    pass
+    # After scratching the claim button takes a moment to appear. If nothing
+    # was scratched, only check briefly for a reward left over from earlier.
+    try_click(driver, CLAIM_BUTTON, timeout=10 if cards else 2)
 
 #Spice horses
 def spice_horse(driver):

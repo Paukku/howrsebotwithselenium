@@ -1,17 +1,23 @@
-from utils.randomTime import sleep, random_wait
-from actions.care.center import center_automated
-import random
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import json
+import random
 from pathlib import Path
-from .divines_actions import DIVINE_ACTIONS, REWARD_BUTTONS, DIVINE_CARE, NO_COMPETITION_DIVINES
-from .divines_functions import close_popup_if_present, divine_competition
-from .care_actions import grooming, feeding, sleeping, do_task
-from .care_utils import set_automates
 
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+from actions.care.center import center_automated
+from utils.random_time import random_wait, sleep
+
+from .care_actions import do_task, feeding, grooming, sleeping
+from .care_utils import set_automates
+from .divines_actions import (
+  DIVINE_ACTIONS,
+  DIVINE_CARE,
+  REWARD_BUTTONS,
+)
+from .divines_functions import close_popup_if_present
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -19,7 +25,6 @@ with open(BASE_DIR / "data" / "divines.json", encoding="utf-8") as f:
   DIVINES = json.load(f)
 
 def take_care_horses(driver, feeding, horse, skip_feeding):
-  sleep()
   count = 0
   is_it_break = 0
   break_after = randomNumberOfHorses()

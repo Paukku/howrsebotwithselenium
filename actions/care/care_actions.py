@@ -1,8 +1,11 @@
-from actions.care.feeding import feed_horse, automated_feed
-from utils.randomTime import short_sleep as sleep
 from selenium.webdriver.common.by import By
-from .care_utils import click_button_by_id
+
+from actions.care.feeding import automated_feed, feed_horse
+from utils.random_time import short_sleep as sleep
 from utils.waits import click_when_ready, try_click
+
+from .care_utils import click_button_by_id
+
 
 def grooming(driver):
   click_button_by_id(driver, "boutonPanser")
@@ -92,15 +95,9 @@ def get_specialization(driver):
 
   return None
 
+MISSION_BUTTON_IDS = ["boutonMissionEquus", "boutonMissionForet", "boutonMissionMontagne"]
+MISSION_BUTTONS = (By.CSS_SELECTOR, ", ".join(f"#{i}" for i in MISSION_BUTTON_IDS))
+
 def do_task(driver):
-  try:
-    driver.find_element(By.ID, "boutonMissionEquus").click()
-  except:
-    try:
-      driver.find_element(By.ID, "boutonMissionForet").click()
-    except:
-      try:
-        driver.find_element(By.ID, "boutonMissionMontagne").click()
-      except:
-        pass
-  sleep()
+    """Start the task available in the horse's current stable, if any."""
+    return try_click(driver, MISSION_BUTTONS)

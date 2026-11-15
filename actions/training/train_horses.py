@@ -1,9 +1,17 @@
 from selenium.webdriver.common.by import By
-from actions.care.center import select_right_stable
-from actions.care.care_actions import grooming, feeding, sleeping, give_carrot, give_water, stroke, give_mash, equip_classic_gear
-from actions.training.training import select_auto_training
-from actions.care.care_utils import get_energy, set_automates
 from utils.randomTime import short_sleep as sleep
+
+from actions.care.care_actions import (
+  feeding,
+  give_carrot,
+  give_water,
+  grooming,
+  stroke,
+)
+from actions.care.care_utils import get_energy, set_automates
+from actions.care.center import select_right_stable
+from actions.training.training import select_auto_training
+
 
 def run_training(driver, amount, horse_id, feed):
   amount = int(amount)

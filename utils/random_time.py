@@ -1,6 +1,10 @@
-import time
 import random
+import time
 
+
+def tiny_sleep():
+  """Tiny pause (0.03-0.08 s) before a click."""
+  time.sleep(random.uniform(0.13, 0.19))
 def short_sleep():
   time.sleep(random.uniform(0.23, 0.27)) #vaihda 23 ja 33
 

@@ -1,7 +1,14 @@
-from .divines_functions import take_walk, take_right_special_walk, check_right_special_walk, click_button_by_text
-from .care_actions import grooming, give_carrot, feeding, give_water, give_mash, stroke
 from selenium.webdriver.common.by import By
+
+from .care_actions import feeding, give_carrot, give_mash, give_water, grooming, stroke
 from .care_utils import set_automates
+from .divines_functions import (
+  check_right_special_walk,
+  click_button_by_text,
+  take_right_special_walk,
+  take_walk,
+)
+
 
 def solar_system_care(driver, horse, feed):
   walk = horse.get("walk")

@@ -3,11 +3,12 @@ import json
 import sys
 
 from actions.blup.blup import run_blup
+from actions.blup.blup_utils import age_up
 from actions.care.care import take_care_horses
 from actions.training.train_horses import run_training
 from login import log_in
-from actions.care.care_actions import equip_classic_gear
-from utils.randomTime import sleep
+from utils.random_time import sleep
+
 
 def load_config(path):
   try:
@@ -52,7 +53,7 @@ def run_testing_task(driver, config):
   sleep()
   
   driver.get(f"https://www.howrse.fi/elevage/chevaux/cheval?id={testing['horse_id']}")
-  equip_classic_gear(driver)
+  age_up(driver)
 
 
 # Order matters: tasks always run in this order
