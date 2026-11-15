@@ -1,38 +1,101 @@
-from login import log_in
+import argparse
 import json
-from actions.care.care import take_care_horses
+import sys
+
 from actions.blup.blup import run_blup
+from actions.care.care import take_care_horses
 from actions.training.train_horses import run_training
-with open('config.json') as f:
-  config = json.load(f)
+from login import log_in
 
-driver = log_in()
 
-blup = config["blup"]
-feeding = blup["feeding"]
-horse_id = blup["horse_id"]
-amount = blup["amount"]
-
-run_blup(driver, amount, horse_id, feeding)
-account = config["accounts"][0]
-
-for account in config["accounts"]:
-  print(account["name"])
-  feeding = account["feeding"]
-
-  for horse in account["horses"]:
-    skip_feeding = horse.get("skip_feeding", False)
-        
-    take_care_horses(
-      driver,
-      feeding,
-      horse,
-      skip_feeding=skip_feeding
+def load_config(path):
+  try:
+    with open(path, encoding="utf-8") as f:
+      return json.load(f)
+  except FileNotFoundError:
+    raise SystemExit(
+      f"Config file not found: {path}. "
+      "Copy config.example.json to config.json first."
     )
+  except json.JSONDecodeError as e:
+    raise SystemExit(f"Invalid JSON in {path}: {e}")
 
 
-training = config["training"]
-feeding = training["feeding"]
-horse_id = training["horse_id"]
-amount = training["amount"]
-#run_training(driver, amount, horse_id, feeding)
+def run_blup_task(driver, config):
+  blup = config["blup"]
+  run_blup(driver, blup["amount"], blup["horse_id"], blup.get("feeding"))
+
+
+def run_care_task(driver, config):
+  for account in config["accounts"]:
+    print(account["name"])
+    feeding = account.get("feeding")
+    for horse in account["horses"]:
+      take_care_horses(
+        driver,
+        feeding,
+        horse,
+        skip_feeding=horse.get("skip_feeding", False),
+      )
+
+
+def run_training_task(driver, config):
+  training = config["training"]
+  run_training(
+    driver, training["amount"], training["horse_id"], training.get("feeding")
+  )
+
+
+# Order matters: tasks always run in this order
+TASKS = {
+  "care": run_care_task,
+  "blup": run_blup_task,
+  "training": run_training_task,
+}
+
+
+def is_enabled(config, task):
+  if task == "care":
+    return bool(config.get("accounts"))
+  return config.get(task, {}).get("enabled", False)
+
+
+def parse_args(argv=None):
+  parser = argparse.ArgumentParser(description="Howrse browser automation bot.")
+  parser.add_argument(
+    "-t",
+    "--task",
+    nargs="+",
+    choices=list(TASKS),
+    help="tasks to run (default: every task enabled in the config)",
+  )
+  parser.add_argument(
+    "-c", "--config", default="config.json", help="path to the config file"
+  )
+  return parser.parse_args(argv)
+
+
+def main(argv=None):
+  args = parse_args(argv)
+  config = load_config(args.config)
+
+  if args.task:
+    tasks = [t for t in TASKS if t in args.task]
+  else:
+    tasks = [t for t in TASKS if is_enabled(config, t)]
+
+  if not tasks:
+    print("No tasks to run. Enable tasks in the config or use --task.")
+    return 0
+
+  driver = log_in()
+  try:
+    for name in tasks:
+      TASKS[name](driver, config)
+  finally:
+    driver.quit()
+  return 0
+
+
+if __name__ == "__main__":
+  sys.exit(main())
