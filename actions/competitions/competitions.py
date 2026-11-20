@@ -117,8 +117,8 @@ def dressage_competition(driver, amount):
     driver,
     amount,
     [
-      "a.competition-dressage-rainbow",
-     # "a.competition-dressage"
+      #"a.competition-dressage-rainbow",
+      "a.competition-dressage"
     ],
     "Koulukisa"
   )
@@ -162,8 +162,8 @@ def trail_competition(driver, amount):
     driver,
     amount,
     [
-      "a.competition-trail-class-rainbow",
-     # "a.competition-trail-class"
+     # "a.competition-trail-class-rainbow",
+      "a.competition-trail-class"
     ],
     "Trail"
   )

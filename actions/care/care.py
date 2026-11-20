@@ -16,8 +16,9 @@ from .divines_actions import (
   DIVINE_ACTIONS,
   DIVINE_CARE,
   REWARD_BUTTONS,
+  NO_COMPETITION_DIVINES
 )
-from .divines_functions import close_popup_if_present
+from .divines_functions import close_popup_if_present, divine_competition
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -66,8 +67,8 @@ def take_care_one_horse(driver, feed, skip_feeding):
         if care_divine:
           care_divine(driver, horse, feed)
         return
-   # if divine_type not in NO_COMPETITION_DIVINES:
-    #  divine_competition(driver)
+    if divine_type not in NO_COMPETITION_DIVINES:
+      divine_competition(driver)
 
   
   do_task(driver)
