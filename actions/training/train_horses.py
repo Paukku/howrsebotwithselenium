@@ -33,7 +33,7 @@ CARROT_SKILLS = {"ravi", "laukka", "este"}
 NEXT_HORSE_BUTTON = (By.ID, "nav-next")
 
 
-def run_training(driver, amount, horse_id, feed, pizkunen_owner):
+def run_training(driver, amount, horse_id, feed, stable_owner):
   """Train `amount` horses, one action per horse, starting from horse_id.
 
   The horses are expected to be in age order (youngest first), so the run
@@ -60,7 +60,7 @@ def run_training(driver, amount, horse_id, feed, pizkunen_owner):
       return i
 
     if plan.move_to:
-      move_to_stable(driver, plan.move_to, pizkunen_owner)
+      move_to_stable(driver, plan.move_to, stable_owner)
 
     grooming(driver)
     run_action(driver, plan)

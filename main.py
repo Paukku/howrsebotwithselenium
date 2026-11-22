@@ -54,7 +54,7 @@ def run_quick_care_task(driver, config):
 def run_training_task(driver, config):
   training = config["training"]
   run_training(
-    driver, training["amount"], training["horse_id"], training.get("feeding")
+    driver, training["amount"], training["horse_id"], training.get("feeding"), training.get("owner")
   )
 
 def run_testing_task(driver, config):
