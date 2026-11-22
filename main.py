@@ -3,7 +3,7 @@ import json
 import sys
 
 from actions.blup.blup import run_blup
-from actions.blup.blup_utils import age_up
+from actions.training.train_horses import run_training
 from actions.care.care import take_care_horses
 from actions.training.train_horses import run_training
 from login import log_in
@@ -40,6 +40,16 @@ def run_care_task(driver, config):
         skip_feeding=horse.get("skip_feeding", False),
       )
 
+def run_quick_care_task(driver, config):
+  quick_care = config["quick_care"]
+  take_care_horses(
+      driver,
+      quick_care.get("feeding"),
+      {"id": quick_care["horse_id"], "amount": quick_care["amount"]},
+      skip_feeding=quick_care.get("skip_feeding", False),
+    )
+        
+
 
 def run_training_task(driver, config):
   training = config["training"]
@@ -53,7 +63,7 @@ def run_testing_task(driver, config):
   sleep()
   
   driver.get(f"https://www.howrse.fi/elevage/chevaux/cheval?id={testing['horse_id']}")
-  age_up(driver)
+  run_training(driver)
 
 
 # Order matters: tasks always run in this order
@@ -62,6 +72,7 @@ TASKS = {
   "blup": run_blup_task,
   "training": run_training_task,
   "testing": run_testing_task,
+  "quick_care": run_quick_care_task,
 }
 
 
