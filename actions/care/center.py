@@ -4,6 +4,42 @@ from selenium.common.exceptions import WebDriverException
 from utils.items import has_item
 from utils.random_time import sleep, task_sleep
 
+from utils.waits import click_when_ready, try_click
+
+REGISTRATION_LINK = (By.CSS_SELECTOR, "a[href*='centreInscription']")
+RESERVED_TAB = (By.CSS_SELECTOR, "#tab-box-reserve a")
+
+
+def change_to_reserved_stable(driver, owner):
+  """Register the horse in the reserved stable of the given owner.
+
+  Does nothing if the horse is already in a stable (no registration link).
+  Raises TimeoutException if the owner's stable has no free place.
+  """
+  if not try_click(driver, REGISTRATION_LINK):
+    print("Hevonen on jo tallissa. Talliin laitto ohitetaan.")
+    return
+
+  click_when_ready(driver, RESERVED_TAB)
+
+  free_place = (
+    By.XPATH,
+    f"//tr[.//a[contains(@class, 'usergroup_2') and normalize-space()='{owner}']]"
+    "//button[normalize-space()='Vapaana']",
+  )
+  click_when_ready(driver, free_place)
+
+
+def change_to_own_stable(driver, owner):
+  # Keeps BLUP and center_automated working. TODO: move the default owner to config.
+  change_to_reserved_stable(driver, owner)
+
+# Used by the training flow: stable name from plan_horse -> (saved search, days column)
+STABLE_SEARCHES = {
+  "forest": ("varsat metsä 30pv", 8),
+  "mountain": ("varsat vuoret 30pv", 8),
+  "gear": ("varsat metsä 30pv", 8),  # both searches require the gear; forest chosen
+}
 
 def center_automated(driver):
   if(has_item(driver, "hypnosin peite")):
@@ -72,6 +108,14 @@ def select_right_stable(driver):
   else:
     search_right_stable(driver, "varsat vuoret 30pv", 8)
 
+def move_to_stable(driver, stable, owner):
+  if stable == "done":
+    change_to_reserved_stable(driver, owner)
+  else:
+    search_name, days = STABLE_SEARCHES[stable]
+    search_right_stable(driver, search_name, days)
+
+
 # Help functions for stable management
 def cancel_current_stable(driver):
   # 1. Peruuta nykyinen majoitus 
@@ -134,8 +178,6 @@ def forest_skills_left(driver):
   tooltip = forest_walk.get_attribute("data-tooltip")
 
   if "gains" in tooltip:
-    print("Metsälenkkejä on vielä jäljellä")
     return True
   else:
-    print("Metsälenkit on jo tehty")
     return False
