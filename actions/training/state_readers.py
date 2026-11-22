@@ -90,3 +90,42 @@ def get_stable_gear_style(driver):
     if match:
       return GEAR_STYLES.get(match.group(1))
   return None
+
+
+# Tooltip of a quick competition link, as text:
+#   Kesto: <b>2 t</b><br/>Nopeus: <strong>+</strong><strong dir="ltr">13,04</strong><br/>...
+# A competition that gives no skill points only shows the "Kesto" (duration) line.
+SKILL_GAIN = re.compile(r"([^<>:]+):\s*<strong>\+</strong>\s*<strong[^>]*>([\d.,]+)</strong>")
+
+
+def parse_competition_gains(tooltip):
+  """'Nopeus: +13,04 ...' -> {"Nopeus": 13.04}; empty dict if no skill gains."""
+  return {
+    name.strip(): float(value.replace(",", "."))
+    for name, value in SKILL_GAIN.findall(tooltip)
+  }
+
+
+def get_competition_gains(driver):
+  """Return {competition: {skill: gain}} for the quick competitions of the horse.
+
+  The key is the link's class without the "competition-" prefix, for example
+  "barrel" or "trail-class". A competition without skill gains has an empty dict.
+  """
+  gains = {}
+  for link in driver.find_elements(By.CSS_SELECTOR, "#competition a.action"):
+    classes = (link.get_attribute("class") or "").split()
+    name = next((c for c in classes if c.startswith("competition-")), None)
+    if name:
+      tooltip = link.get_attribute("data-tooltip") or ""
+      gains[name.removeprefix("competition-")] = parse_competition_gains(tooltip)
+  return gains
+
+
+def can_compete_for_skills(driver):
+  """Specialised, equipped and at least one competition gives skill points."""
+  return (
+    is_specialised(driver)
+    and is_equipped(driver)
+    and any(get_competition_gains(driver).values())
+  )
